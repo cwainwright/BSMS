@@ -1,0 +1,39 @@
+<RCC>
+  <qresource prefix="music_notes">
+    <file alias="filled">resources/music_notes (filled).svg</file>
+    <file alias="not_filled">resources/music_notes.svg</file>
+  </qresource>
+  <qresource prefix="table_edit">
+    <file alias="not_filled">resources/table_edit.svg</file>
+    <file alias="filled">resources/table_edit (filled).svg</file>
+  </qresource>
+  <qresource prefix="folder">
+    <file alias="not_filled">resources/folder_open.svg</file>
+    <file alias="filled">resources/folder_open (filled).svg</file>
+  </qresource>
+  <qresource prefix="bullet_list_square">
+    <file alias="filled">resources/text_bullet_list_square (filled).svg</file>
+    <file alias="not_filled">resources/text_bullet_list_square.svg</file>
+  </qresource>
+  <qresource prefix="general">
+    <file alias="delete">resources/delete.svg</file>
+    <file alias="add">resources/add.svg</file>
+    <file alias="edit">resources/edit.svg</file>
+  </qresource>
+  <qresource prefix="timeline">
+    <file alias="filled">resources/timeline (filled).svg</file>
+    <file alias="not_filled">resources/timeline.svg</file>
+  </qresource>
+  <qresource prefix="arrows">
+    <file alias="arrow_down">resources/arrow_down.svg</file>
+    <file alias="arrow_import">resources/arrow_import.svg</file>
+    <file alias="arrow_left">resources/arrow_left.svg</file>
+    <file alias="arrow_right">resources/arrow_right.svg</file>
+    <file alias="arrow_sync">resources/arrow_sync.svg</file>
+    <file alias="arrow_up">resources/arrow_up.svg</file>
+  </qresource>
+  <qresource prefix="fit_height">
+    <file alias="filled">resources/arrow_fit_height (filled).svg</file>
+    <file alias="not_filled">resources/arrow_fit_height.svg</file>
+  </qresource>
+</RCC>
