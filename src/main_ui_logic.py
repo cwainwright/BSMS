@@ -1,19 +1,20 @@
 """Bridge gap between program logic and gui"""
 import sys
-from os import listdir, path
-from json import load, dump
 from copy import deepcopy
+from json import dump, load
+from os import listdir, path
 
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtCore, QtWidgets
 
-from debug import DebugLog
-from bsms_core import finalise
-from rhythms import rhythm_directory, Rhythm, Rest, get_rhythm_duration, rhythm_load, rhythm_save
-from timeline import Timeline
 import engrave
-
+from bsms_core import finalise
+from debug import DebugLog
+from dialog_window_logic import (AlertWindow, DialogWindow, InputWindow,
+                                 RestInputWindow)
+from rhythms import (Rest, Rhythm, get_rhythm_duration, rhythm_directory,
+                     rhythm_load, rhythm_save)
+from timeline import Timeline
 from ui.main_ui import Ui_MainWindow
-from dialog_window_logic import AlertWindow, DialogWindow, InputWindow, RestInputWindow
 
 debug_log = DebugLog("main_ui_logic.py")
 
