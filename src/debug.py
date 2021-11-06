@@ -1,6 +1,7 @@
 """debug log creation module"""
-from os import path, mkdir
 from datetime import datetime
+from os import mkdir, path
+
 
 class DebugLog:
     """ Creates debug log

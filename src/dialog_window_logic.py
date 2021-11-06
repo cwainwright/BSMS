@@ -5,6 +5,7 @@ from ui.dialog import Ui_Dialog
 from ui.input_dialog import Ui_InputDialog
 from ui.rest_input import Ui_RestInput
 
+
 class TemplateDialogWindow:
     """superclass to dialog window classes below"""
     def __init__(self, message, title, Ui_Build):

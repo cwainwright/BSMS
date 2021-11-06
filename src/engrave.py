@@ -1,6 +1,6 @@
 """Engrave toolset"""
-from os import path, mkdir, listdir
 from json import dump
+from os import listdir, mkdir, path
 
 from bsms_core import projects_directory
 from debug import DebugLog

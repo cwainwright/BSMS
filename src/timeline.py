@@ -1,12 +1,11 @@
 """Timeline class management and functionality"""
-from os import path, chdir
-from json import load, dump
+from json import dump, load
+from os import chdir, path
 from typing import Union
 
-from debug import DebugLog
-from rhythms import Rhythm, Rest
 from bsms_core import projects_directory
-
+from debug import DebugLog
+from rhythms import Rest, Rhythm
 
 debug_log = DebugLog("timeline.py")
 

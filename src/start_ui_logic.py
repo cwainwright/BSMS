@@ -2,12 +2,13 @@
 import sys
 from os import listdir, path
 
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtCore, QtWidgets
 
 from bootstrap import bsms_directory
-from ui.quickstart import Ui_QuickstartMenu
-from ui.metadata_input_dialog import Ui_MetadataDialog
 from dialog_window_logic import AlertWindow
+from ui.metadata_input_dialog import Ui_MetadataDialog
+from ui.quickstart import Ui_QuickstartMenu
+
 
 #Window Classes
 class TemplateWindow:

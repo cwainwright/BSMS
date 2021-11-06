@@ -1,9 +1,10 @@
 """Management of preset Rhythms"""
-from os import path, listdir, mkdir
-from json import load, dump
 from copy import deepcopy
+from json import dump, load
+from os import listdir, mkdir, path
 
 from debug import DebugLog
+
 
 # Each rhythm will be stored within its own JSON file
 def rhythm_directory(category = None, rhythm_id = None):

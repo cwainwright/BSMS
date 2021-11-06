@@ -4,18 +4,18 @@
  - finalise()
  - apply_beat_offset()"""
 
-from os import path, mkdir, listdir
 from json import dump, load
 from math import ceil
+from os import listdir, mkdir, path
 from shutil import copyfile
 
+from librosa import beat, frames_to_time, get_duration, get_samplerate
 from librosa import load as libload
-from librosa import frames_to_time, beat, get_samplerate, get_duration
-from numpy import shape, zeros, append
+from numpy import append, shape, zeros
 from soundfile import read, write
 
-from debug import DebugLog
 from bootstrap import bsms_directory
+from debug import DebugLog
 
 debug_log = DebugLog("bsms_core.py")
 

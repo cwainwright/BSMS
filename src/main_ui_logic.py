@@ -9,10 +9,20 @@ from PyQt5 import QtCore, QtWidgets
 import engrave
 from bsms_core import finalise
 from debug import DebugLog
-from dialog_window_logic import (AlertWindow, DialogWindow, InputWindow,
-                                 RestInputWindow)
-from rhythms import (Rest, Rhythm, get_rhythm_duration, rhythm_directory,
-                     rhythm_load, rhythm_save)
+from dialog_window_logic import (
+    AlertWindow,
+    DialogWindow,
+    InputWindow,
+    RestInputWindow
+)
+from rhythms import (
+    Rest,
+    Rhythm,
+    get_rhythm_duration,
+    rhythm_directory,
+    rhythm_load,
+    rhythm_save
+)
 from timeline import Timeline
 from ui.main_ui import Ui_MainWindow
 
