@@ -1,14 +1,15 @@
 """main program script"""
 import sys
-from os import path, listdir, remove, rmdir
+from os import listdir, path, remove, rmdir
 
 from PyQt5 import QtWidgets
 
-from debug import DebugLog
 from bootstrap import setup
-from bsms_core import import_song, LibCache
-from start_ui_logic import QuickstartLogic, MetadataLogic
-from main_ui_logic import MainWindowLogic, InputWindow, DialogWindow
+from bsms_core import LibCache, import_song
+from debug import DebugLog
+from main_ui_logic import DialogWindow, InputWindow, MainWindowLogic
+from start_ui_logic import MetadataLogic, QuickstartLogic
+
 
 def cleanup(project_directory):
     """clean up half-complete project directories"""
