@@ -1,0 +1,33 @@
+{
+    "note_data": [
+        {
+            "_time": 0,
+            "_lineIndex": 1,
+            "_lineLayer": 0,
+            "_type": 0,
+            "_cutDirection": 1
+        },
+        {
+            "_time": 0.25,
+            "_lineIndex": 0,
+            "_lineLayer": 1,
+            "_type": 0,
+            "_cutDirection": 0
+        },
+        {
+            "_time": 0.5,
+            "_lineIndex": 2,
+            "_lineLayer": 0,
+            "_type": 1,
+            "_cutDirection": 1
+        },
+        {
+            "_time": 0.75,
+            "_lineIndex": 3,
+            "_lineLayer": 1,
+            "_type": 1,
+            "_cutDirection": 0
+        }
+    ],
+    "duration": 1
+}
