@@ -1,9 +1,11 @@
 """ Handles initial startup processes checking the file system integrity"""
 from os import chdir, mkdir, path
 
-from debug import DebugLog
+from logging import Logger
 
-debug_log = DebugLog("bootstrap.py")
+log = Logger(
+    name="bootstrap"
+)
 
 def documents_directory():
     """return user documents directory"""
@@ -48,19 +50,16 @@ def check_directory_existence(
 def directory_verification(*directories):
     """check for directories in list"""
     for directory in directories:
-        debug_log.log(
-            "directory_verification()",
-            "checking for directory %s" % directory
+        log.info(
+            msg="checking for directory %s" % directory
         )
         if check_directory_existence(*directory):
-            debug_log.log(
-                "directory_verification()",
-                "directory %s found" % directory
+            log.info(
+                msg="directory %s found" % directory
             )
         else:
-            debug_log.log(
-                "directory_verification()",
-                "directory %s not found; " % directory
+            log.warning(
+                msg="directory %s not found; " % directory
                 + "new directory was created"
             )
 
@@ -68,11 +67,12 @@ def setup():
     """Initial setup function"""
     chdir(bsms_directory())
     directory_verification(
-            [bsms_directory()],
-            [bsms_directory("Rhythms")],
-            [bsms_directory("Projects")],
-            [bsms_directory("Finalised Projects")]
+        [bsms_directory()],
+        [bsms_directory("Rhythms")],
+        [bsms_directory("Projects")],
+        [bsms_directory("Finalised Projects")]
     )
 
 if __name__ == "__main__":
     setup()
+    print("setup complete")
