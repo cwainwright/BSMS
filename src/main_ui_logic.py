@@ -147,10 +147,12 @@ class RhythmTabLogic:
         """populate internal tree (i_tree)"""
         self.i_tree.clear()
         for category in listdir(rhythm_directory()):
-            category_contents = []
-            for rhythm_id in listdir(rhythm_directory(category)):
-                category_contents.append(rhythm_id)
-            self.i_tree.update({category: category_contents})
+            if category != ".DS_Store":
+                category_contents = []
+                for rhythm_id in listdir(rhythm_directory(category)):
+                    if rhythm_id != ".DS_Store":
+                        category_contents.append(rhythm_id)
+                self.i_tree.update({category: category_contents})
 
     def populate_external(self):
         """populate external tree (e_tree)"""
