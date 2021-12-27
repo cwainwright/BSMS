@@ -1,5 +1,5 @@
 """ Handles initial startup processes checking the file system integrity"""
-from os import chdir, mkdir, path
+from os import mkdir, path
 
 from logging import Logger
 
@@ -65,7 +65,6 @@ def directory_verification(*directories):
 
 def setup():
     """Initial setup function"""
-    chdir(bsms_directory())
     directory_verification(
         [bsms_directory()],
         [bsms_directory("Rhythms")],
@@ -75,4 +74,3 @@ def setup():
 
 if __name__ == "__main__":
     setup()
-    print("setup complete")
