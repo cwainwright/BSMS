@@ -227,25 +227,22 @@ class RhythmTabLogic:
             filter="JSON Files (*.json)"
         )[0]
         if filepath is None or filepath == "":
-            logger.log(
-                "RhythmTabLogic.import_selected()",
-                "no file selected: import cancelled"
+            logger.info(
+                msg="no file selected: import cancelled"
             )
             return False
         rhythm_load_result = rhythm_load(filepath)
         if not rhythm_load_result[0]:
             overwrite_confirmation = DialogWindow("Rhythm already detected: overwrite?")
             if not overwrite_confirmation.run():
-                logger.log(
-                    "RhythmTabLogic.import_selected()",
-                    "cancel selected: import cancelled"
+                logger.info(
+                    msg="cancel selected: import cancelled"
                 )
                 return False
         rhythm_save(**rhythm_load_result[1])
         self.refresh_selected()
-        logger.log(
-            "RhythmTabLogic.import_selected()",
-            "import successful"
+        logger.info(
+            msg="import successful"
         )
         return True
 
@@ -324,9 +321,8 @@ class RestTabLogic:
                 dump(self.i_tree, rests_json, indent=4)
             self.refresh_selected()
         else:
-            logger.log(
-                "RestTabLogic.custom_selected()",
-                "cancel selected: creation of custom rest cancelled"
+            logger.info(
+                msg="cancel selected: creation of custom rest cancelled"
             )
 
     def edit_selected(self):
@@ -501,17 +497,15 @@ class InfoTabLogic:
             if value_name in lib_cache_data:
                 value.setText(str(lib_cache_data[value_name]))
             else:
-                logger.log(
-                    "InfoTabLogic.populate()",
-                    "text could not be found %s" % value_name
+                logger.info(
+                    msg=f"text could not be found {value_name}"
                 )
         for value_name, value in self.iterate_value_info.items():
             if value_name in lib_cache_data:
                 value.setValue(lib_cache_data[value_name])
             else:
-                logger.log(
-                    "InfoTabLogic.populate()",
-                    "text could not be found %s" % value_name
+                logger.info(
+                    msg=f"text could not be found {value_name}"
                 )
         for value_name, value in self.iterate_combobox_info.items():
             if value_name in lib_cache_data:
@@ -519,9 +513,8 @@ class InfoTabLogic:
                 if index != -1:
                     value.setCurrentIndex(index)
             else:
-                logger.log(
-                    "InfoTabLogic.populate()",
-                    "text could not be found %s" % value_name
+                logger.info(
+                    msg=f"text could not be found {value_name}"
                 )
 
     def cancel_selected(self):
