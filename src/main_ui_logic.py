@@ -3,12 +3,12 @@ import sys
 from copy import deepcopy
 from json import dump, load
 from os import listdir, path
+import logging
 
 from PyQt5 import QtCore, QtWidgets
 
 import engrave
 from bsms_core import finalise
-from debug import DebugLog
 from dialog_window_logic import (
     AlertWindow,
     DialogWindow,
@@ -26,7 +26,16 @@ from rhythms import (
 from timeline import Timeline
 from ui.main_ui import Ui_MainWindow
 
-debug_log = DebugLog("main_ui_logic.py")
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    filename=path.join(
+        "logs",
+        f"{__name__}.log"
+    ),
+    filemode="a"
+)
+
+logger = logging.getLogger(__name__)
 
 # Window Class
 class MainWindow:
@@ -218,7 +227,7 @@ class RhythmTabLogic:
             filter="JSON Files (*.json)"
         )[0]
         if filepath is None or filepath == "":
-            debug_log.log(
+            logger.log(
                 "RhythmTabLogic.import_selected()",
                 "no file selected: import cancelled"
             )
@@ -227,14 +236,14 @@ class RhythmTabLogic:
         if not rhythm_load_result[0]:
             overwrite_confirmation = DialogWindow("Rhythm already detected: overwrite?")
             if not overwrite_confirmation.run():
-                debug_log.log(
+                logger.log(
                     "RhythmTabLogic.import_selected()",
                     "cancel selected: import cancelled"
                 )
                 return False
         rhythm_save(**rhythm_load_result[1])
         self.refresh_selected()
-        debug_log.log(
+        logger.log(
             "RhythmTabLogic.import_selected()",
             "import successful"
         )
@@ -315,7 +324,7 @@ class RestTabLogic:
                 dump(self.i_tree, rests_json, indent=4)
             self.refresh_selected()
         else:
-            debug_log.log(
+            logger.log(
                 "RestTabLogic.custom_selected()",
                 "cancel selected: creation of custom rest cancelled"
             )
@@ -492,7 +501,7 @@ class InfoTabLogic:
             if value_name in lib_cache_data:
                 value.setText(str(lib_cache_data[value_name]))
             else:
-                debug_log.log(
+                logger.log(
                     "InfoTabLogic.populate()",
                     "text could not be found %s" % value_name
                 )
@@ -500,7 +509,7 @@ class InfoTabLogic:
             if value_name in lib_cache_data:
                 value.setValue(lib_cache_data[value_name])
             else:
-                debug_log.log(
+                logger.log(
                     "InfoTabLogic.populate()",
                     "text could not be found %s" % value_name
                 )
@@ -510,7 +519,7 @@ class InfoTabLogic:
                 if index != -1:
                     value.setCurrentIndex(index)
             else:
-                debug_log.log(
+                logger.log(
                     "InfoTabLogic.populate()",
                     "text could not be found %s" % value_name
                 )

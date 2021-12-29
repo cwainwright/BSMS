@@ -1,76 +1,38 @@
 """ Handles initial startup processes checking the file system integrity"""
-from os import mkdir, path
+import logging
+from os import path
 
-from logging import Logger
+from directory_operations import bsms_directory, directory_verification
 
-log = Logger(
-    name="bootstrap"
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    filename=path.join(
+        "logs",
+        f"{__name__}.log"
+    ),
+    filemode="a"
 )
 
-def documents_directory():
-    """return user documents directory"""
-    return path.join(
-        path.expanduser('~'),
-        "Documents"
-    )
+logger = logging.getLogger(__name__)
 
-def bsms_directory(sub_directory = None):
-    """return user documents directory"""
-    whitelisted_sub_directories = [
-        "Projects",
-        "Rhythms",
-        "Finalised Projects",
-        "Debuglogs"
-    ]
-    if sub_directory in whitelisted_sub_directories:
-        file_path = path.join(
-            bsms_directory(),
-            sub_directory
-        )
-    else:
-        file_path = path.join(
-            path.expanduser('~'),
-            "Documents",
-            "BSMS"
-        )
-    return file_path
-
-def check_directory_existence(
-    target_directory: str = path.join(
-            path.expanduser('~'),
-            "Documents", "BSMS"
-        )
-):
-    """check for and create directory"""
-    if path.exists(target_directory):
-        return True
-    mkdir(target_directory)
-    return False
-
-def directory_verification(*directories):
-    """check for directories in list"""
-    for directory in directories:
-        log.info(
-            msg="checking for directory %s" % directory
-        )
-        if check_directory_existence(*directory):
-            log.info(
-                msg="directory %s found" % directory
-            )
-        else:
-            log.warning(
-                msg="directory %s not found; " % directory
-                + "new directory was created"
-            )
 
 def setup():
     """Initial setup function"""
-    directory_verification(
-        [bsms_directory()],
-        [bsms_directory("Rhythms")],
-        [bsms_directory("Projects")],
-        [bsms_directory("Finalised Projects")]
-    )
+    filepaths = [
+        bsms_directory(),
+        bsms_directory("Rhythms"),
+        bsms_directory("Projects"),
+        bsms_directory("Finalised Projects")
+    ]
+    for filepath in filepaths:
+        logger.info(
+            msg=f"verifying directory {filepath}"
+        )
+        directory_verification(filepath)
+        logger.info(
+            msg=f"directory {filepath} verified"
+        )
+
 
 if __name__ == "__main__":
     setup()

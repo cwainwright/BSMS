@@ -1,15 +1,25 @@
 """main program script"""
 import sys
 from os import listdir, path, remove, rmdir
+import logging
 
 from PyQt5 import QtWidgets
 
 from bootstrap import setup
 from bsms_core import LibCache, import_song
-from debug import DebugLog
 from main_ui_logic import DialogWindow, InputWindow, MainWindowLogic
 from start_ui_logic import MetadataLogic, QuickstartLogic
 
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    filename=path.join(
+        "logs",
+        f"{__name__}.log"
+    ),
+    filemode="a"
+)
+
+logger = logging.getLogger(__name__)
 
 def cleanup(project_directory):
     """clean up half-complete project directories"""
@@ -20,10 +30,8 @@ def cleanup(project_directory):
 def main():
     """main functions"""
     setup()
-    debug_log = DebugLog("main.py")
-    debug_log.log(
-        "main()",
-        "initialising application..."
+    logger.info(
+        msg="initialising application..."
     )
     app = QtWidgets.QApplication(sys.argv)
 

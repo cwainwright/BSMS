@@ -1,3 +1,6 @@
+import logging
+from os import path
+
 from PyQt5 import QtWidgets
 
 from ui.alert import Ui_Alert
@@ -5,6 +8,16 @@ from ui.dialog import Ui_Dialog
 from ui.input_dialog import Ui_InputDialog
 from ui.rest_input import Ui_RestInput
 
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    filename=path.join(
+        "logs",
+        f"{__name__}.log"
+    ),
+    filemode="a"
+)
+
+logger = logging.getLogger(__name__)
 
 class TemplateDialogWindow:
     """superclass to dialog window classes below"""

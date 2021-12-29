@@ -1,12 +1,21 @@
 """Engrave toolset"""
+import logging
 from json import dump
 from os import listdir, mkdir, path
 
 from bsms_core import projects_directory
-from debug import DebugLog
 from dialog_window_logic import DialogWindow, InputWindow
 
-debug_log = DebugLog("engrave.py")
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    filename=path.join(
+        "logs",
+        f"{__name__}.log"
+    ),
+    filemode="a"
+)
+
+logger = logging.getLogger(__name__)
 
 def engraved_beat_maps_directory(project_name):
     """return engraved_beat_maps_directory"""
@@ -40,14 +49,14 @@ def beatmap(
     if not path.exists(
         engraved_beat_maps_directory(project_name)
     ):
-        debug_log.log("beatmap()", "engravedBeatMaps directory missing")
+        logger.info(msg="engravedBeatMaps directory missing")
         mkdir(path.join(engraved_beat_maps_directory(project_name)))
-        debug_log.log("beatmap()", "new engravedBeatMaps directory created")
+        logger.info(msg="new engravedBeatMaps directory created")
     # If beat_map already exists ask user whether they want to overwrite
     if map_type+map_difficulty+".dat" in listdir(
         engraved_beat_maps_directory(project_name)
     ):
-        debug_log.log("beatmap()", "duplicate beatmap detected")
+        logger.info(msg="duplicate beatmap detected")
         overwrite_confirmation_window = DialogWindow(
             "A beatmap of the same difficulty (%s) \n" % map_difficulty
             + "and type (%s) " % map_type
@@ -60,7 +69,7 @@ def beatmap(
     # Initialise note list to append to
     notes = []
     note_errors = []
-    debug_log.log("beatmap()", "checking note values are valid...")
+    logger.info(msg="checking note values are valid...")
     for note in beat_map_notes:
         # Checks for false in RangeChecks
         note_range_check = [
@@ -73,15 +82,15 @@ def beatmap(
             notes.append(note)
         else:
             note_errors.append({note: note_range_check})
-    debug_log.log("beatmap()", "%i  errors encountered" % len(note_errors))
+    logger.info(msg=f"{len(note_errors)}  errors encountered")
     if len(note_errors) > 0:
-        debug_log.log("beatmap()", "note errors encountered: %s" % note_errors)
+        logger.info(msg=f"note errors encountered: {note_errors}")
 
     # Obstacles
     # Initialise obstacle list to append to
     obstacles = []
     obstacle_errors = []
-    debug_log.log("beatmap()", "checking obstacle values are valid...")
+    logger.info(msg="checking obstacle values are valid...")
     for obstacle in beat_map_obstacles:
         # Checks for false in RangeChecks
         obstacle_range_check = [
@@ -94,15 +103,15 @@ def beatmap(
             obstacles.append(obstacle)
         else:
             obstacle_errors.append({obstacle: obstacle_range_check})
-    debug_log.log("beatmap()", "%i errors encountered" % len(obstacle_errors))
+    logger.info(msg=f"{len(obstacle_errors)} errors encountered")
     if len(obstacle_errors) > 0:
-        debug_log.log("beatmap()", "obstacle errors encountered: %s" % obstacle_errors)
+        logger.info(msg=f"obstacle errors encountered: {obstacle_errors}")
 
     # Events
     # Initialise event list to append to
     events = []
     event_errors = []
-    debug_log.log("beatmap()", "checking event values are valid...")
+    logger.info(msg="checking event values are valid...")
     # Checks event will be valid before formatting
     for event in beat_map_events:
         event_range_check = [
@@ -118,14 +127,12 @@ def beatmap(
             events.append(event)
         else:
             event_errors.append({event: event_range_check})
-    debug_log.log("beatmap()", "%i errors encountered" % len(event_errors))
+    logger.info(msg=f"{len(event_errors)} errors encountered")
     if len(event_errors) > 0:
-        debug_log.log("beatmap()", "event errors encountered: %s" % event_errors)
+        logger.info(msg=f"event errors encountered: {event_errors}")
 
     # Engrave
-    debug_log.log("beatmap()", "dumping beatmap data to %s%s.dat..." % (
-        map_type, map_difficulty
-    ))
+    logger.info(msg=f"dumping beatmap data to {map_type + map_difficulty}.dat...")
     with open(path.join(
         engraved_beat_maps_directory(project_name),
         map_type+map_difficulty+".dat"
@@ -136,7 +143,7 @@ def beatmap(
             "_obstacles": obstacles,
             "_events": events
         }, beat_map_file, indent=4)
-    debug_log.log("beatmap()", "dumped beatmap data to .dat...")
+    logger.info(msg="dumped beatmap data to .dat...")
 
 def info(project_name, lib_cache):
     """Engrave info.dat file"""
@@ -145,14 +152,14 @@ def info(project_name, lib_cache):
     if not path.exists(
         engraved_beat_maps_directory(project_name)
     ):
-        debug_log.log("beatmap()", "engravedBeatMaps directory missing")
+        logger.warning(msg="engravedBeatMaps directory missing")
         mkdir(engraved_beat_maps_directory(project_name))
-        debug_log.log("beatmap()", "new engravedBeatMaps directory created")
+        logger.info(msg="new engravedBeatMaps directory created")
     # If Info already exists ask user whether they want to overwrite
     if "Info.dat" in listdir(
         engraved_beat_maps_directory(project_name)
     ):
-        debug_log.log("beatmap()", "Info.dat detected")
+        logger.info(msg="Info.dat detected")
         overwrite_confirmation_window = DialogWindow(
             "An Info.dat file was discovered; overwrite?"
         )
@@ -181,7 +188,7 @@ def info(project_name, lib_cache):
 
     # BeatMapSet
     standard = []
-    debug_log.log("info()", "")
+    logger.info("info()", "")
     for beat_map in listdir(
         engraved_beat_maps_directory(project_name)
     ):
@@ -202,12 +209,11 @@ def info(project_name, lib_cache):
                     "ExpertPlus": 9
                 }[difficulty]
             else:
-                debug_log.log(
-                    "Engrave.Info()",
-                    "Difficulty of beatmap %s " % beat_map
+                logger.warning(
+                    msg=f"Difficulty of beatmap {beat_map}"
                     + "could not be identified")
                 custom_difficulty_confirmation = DialogWindow(
-                    "Difficulty of beatmap %s " % beat_map
+                    f"Difficulty of beatmap {beat_map} "
                     + "\ncould not be identified."
                     + "\nWould you like to enter custom"
                     + "\ndifficulty and difficulty rank?"
@@ -237,7 +243,7 @@ def info(project_name, lib_cache):
                 "_noteJumpStartBeatOffset": 0.0
             })
     # Engrave
-    debug_log.log("info()", "dumping Info data to Info.dat")
+    logger.info(msg="dumping Info data to Info.dat")
     with open(path.join(
         engraved_beat_maps_directory(project_name),
         "Info.dat"

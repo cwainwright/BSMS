@@ -10,9 +10,10 @@ from ui.metadata_input_dialog import Ui_MetadataDialog
 from ui.quickstart import Ui_QuickstartMenu
 
 
-#Window Classes
+# Window Classes
 class TemplateWindow:
     """Template window"""
+
     def __init__(self, title, Ui_Build):
         self.window = QtWidgets.QDialog()
         self.window.setWindowTitle(title)
@@ -23,19 +24,26 @@ class TemplateWindow:
         """run window"""
         return self.window.exec_()
 
+
 class QuickstartWindow(TemplateWindow):
     """Quickstart window"""
+
     def __init__(self):
         super().__init__("Quickstart", Ui_QuickstartMenu)
 
+
 class MetadataWindow(TemplateWindow):
     """Metadata window"""
+
     def __init__(self):
         super().__init__("Metadata", Ui_MetadataDialog)
 
-#Logic Classes
+# Logic Classes
+
+
 class QuickstartLogic:
     """Logic for Quickstart"""
+
     def __init__(self, app=None):
         if app is None:
             app = QtWidgets.QApplication(sys.argv)
@@ -52,11 +60,13 @@ class QuickstartLogic:
         # Connections
         quickstart_ui.newProjectButton.clicked.connect(self.new_selected)
         quickstart_ui.openProjectButton.clicked.connect(self.open_selected)
-        quickstart_ui.rhythmEditorButton.clicked.connect(self.rhythm_editor_selected)
+        quickstart_ui.rhythmEditorButton.clicked.connect(
+            self.rhythm_editor_selected)
         quickstart_ui.recentsListWidget.itemClicked.connect(self.item_selected)
-        quickstart_ui.recentsListWidget.itemDoubleClicked.connect(self.item_double_clicked)
+        quickstart_ui.recentsListWidget.itemDoubleClicked.connect(
+            self.item_double_clicked)
 
-        #Run app
+        # Run app
         self.quickstart_window.window.exec_()
 
     def populate_internal(self):
@@ -95,7 +105,7 @@ class QuickstartLogic:
         self.quit_result = True
         self.quickstart_window.window.close()
 
-    def open_selected(self, project_directory = None):
+    def open_selected(self, project_directory=None):
         """open selected"""
         if project_directory in [None, False]:
             lib_cache_directory = QtWidgets.QFileDialog.getOpenFileName(
@@ -104,7 +114,7 @@ class QuickstartLogic:
             if lib_cache_directory == "":
                 return
             project_directory = path.split(lib_cache_directory)[0]
-        self.selected_project=project_directory
+        self.selected_project = project_directory
         self.quit_result = True
         self.quickstart_window.window.close()
 
@@ -112,13 +122,15 @@ class QuickstartLogic:
         """rhythm editor incomplete alert"""
         feature_not_ready_alert = AlertWindow(
             "rhythm editor:"
-            +"\nfeature incomplete",
+            + "\nfeature incomplete",
             "feature incomplete"
         )
         feature_not_ready_alert.run()
 
+
 class MetadataLogic:
     """Logic for Metadata input"""
+
     def __init__(self, lib_cache, app=None):
         if app is None:
             app = QtWidgets.QApplication(sys.argv)
@@ -129,25 +141,25 @@ class MetadataLogic:
         metadata_ui = self.metadata_window.user_interface
 
         self.iterate_text_info = {
-            "project_name":metadata_ui.projectNameInput,
-            "version":metadata_ui.versionInput,
-            "song_sub_name":metadata_ui.songSubNameInput,
-            "song_author_name":metadata_ui.songAuthorNameInput,
-            "level_author_name":metadata_ui.levelAuthorNameInput,
-            "song_filename":metadata_ui.songFilenameInput,
-            "cover_filename":metadata_ui.coverImageFilenameInput
+            "project_name": metadata_ui.projectNameInput,
+            "version": metadata_ui.versionInput,
+            "song_sub_name": metadata_ui.songSubNameInput,
+            "song_author_name": metadata_ui.songAuthorNameInput,
+            "level_author_name": metadata_ui.levelAuthorNameInput,
+            "song_filename": metadata_ui.songFilenameInput,
+            "cover_filename": metadata_ui.coverImageFilenameInput
         }
         self.iterate_value_info = {
-            "tempo":metadata_ui.BPMSpinbox,
-            "song_time_offset":metadata_ui.songTimeOffsetSpinbox,
-            "shuffle":metadata_ui.shuffleSpinbox,
-            "shuffle_offset":metadata_ui.shuffleOffsetSpinbox,
-            "preview_start_time":metadata_ui.previewStartTimeSpinbox,
-            "preview_duration":metadata_ui.previewDurationSpinbox
+            "tempo": metadata_ui.BPMSpinbox,
+            "song_time_offset": metadata_ui.songTimeOffsetSpinbox,
+            "shuffle": metadata_ui.shuffleSpinbox,
+            "shuffle_offset": metadata_ui.shuffleOffsetSpinbox,
+            "preview_start_time": metadata_ui.previewStartTimeSpinbox,
+            "preview_duration": metadata_ui.previewDurationSpinbox
         }
         self.iterate_combobox_info = {
-            "environment_name":metadata_ui.environmentNameSelector,
-            "all_directions_environment_name":metadata_ui.allDirectionsEnvironmentNameSelector
+            "environment_name": metadata_ui.environmentNameSelector,
+            "all_directions_environment_name": metadata_ui.allDirectionsEnvironmentNameSelector
         }
         self.fill_in_entries()
 
@@ -161,18 +173,19 @@ class MetadataLogic:
                 value.setValue(self.song_data[value_name])
         for value_name, value in self.iterate_combobox_info.items():
             if value_name in self.song_data:
-                index = value.findText(self.song_data[value_name], QtCore.Qt.MatchFixedString)
+                index = value.findText(
+                    self.song_data[value_name], QtCore.Qt.MatchFixedString)
                 if index != -1:
                     value.setCurrentIndex(index)
 
     def update_from_entries(self):
         """update lib_cache from entries"""
         for value_name, value in self.iterate_text_info.items():
-            self.song_data.update({value_name:value.text()})
+            self.song_data.update({value_name: value.text()})
         for value_name, value in self.iterate_value_info.items():
-            self.song_data.update({value_name:value.value()})
+            self.song_data.update({value_name: value.value()})
         for value_name, value in self.iterate_combobox_info.items():
-            self.song_data.update({value_name:value.currentText()})
+            self.song_data.update({value_name: value.currentText()})
         self.lib_cache.update_cache(self.song_data)
 
     def run(self):
@@ -181,6 +194,7 @@ class MetadataLogic:
             self.update_from_entries()
             return True
         return False
+
 
 if __name__ == "__main__":
     quickstart_window_logic = QuickstartLogic()

@@ -2,9 +2,18 @@
 from copy import deepcopy
 from json import dump, load
 from os import listdir, mkdir, path
+import logging
 
-from debug import DebugLog
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    filename=path.join(
+        "logs",
+        f"{__name__}.log"
+    ),
+    filemode="a"
+)
 
+logger = logging.getLogger(__name__)
 
 # Each rhythm will be stored within its own JSON file
 def rhythm_directory(category = None, rhythm_id = None):
@@ -34,9 +43,6 @@ def rhythm_directory(category = None, rhythm_id = None):
             rhythm_id
         )
     return filepath
-
-
-debug_log = DebugLog("rhythms.py")
 
 """
 Rhythm JSON format
@@ -80,25 +86,21 @@ class RhythmTemplate():
             )
 
             category_path = rhythm_directory(self.rhythm_category)
-            debug_log.log(
-                    "Rhythm.__init__()",
-                    "Checking for: %s" % category_path
+            logger.info(
+                    msg=f"Checking for: {category_path}"
                 )
             if not path.exists(category_path):
-                debug_log.log(
-                    "Rhythm.__init__()",
-                    "Category could not be found (%s)" % self.rhythm_category
+                logger.info(
+                    msg=f"Category could not be found ({self.rhythm_category})"
                 )
                 raise FileNotFoundError("Category could not be found")
 
-            debug_log.log(
-                    "Rhythm.__init__()",
-                    "Checking for: %s" % self.rhythm_file_id
+            logger.info(
+                    msg=f"Checking for: {self.rhythm_file_id}"
                 )
             if not path.exists(self.rhythm_file_id):
-                debug_log.log(
-                    "Rhythm.__init__()",
-                    "Rhythm could not be found in category (%s)" % self.rhythm_id+".json"
+                logger.critical(
+                    msg=f"Rhythm could not be found in category ({self.rhythm_id}.json)"
                 )
                 raise FileNotFoundError("Rhythm could not be found in category")
 
@@ -138,9 +140,8 @@ class RhythmTemplate():
 
     def __normalise(self, data):
         """return normalised items"""
-        debug_log.log(
-            "Rhythm.__normalise()",
-            str(self.identify())+", normalising..."
+        logger.info(
+            msg=f"{str(self.identify())}, normalising..."
         )
         normalised_items = deepcopy(data)
         for item in normalised_items:
@@ -166,9 +167,8 @@ class RhythmTemplate():
 
     def dump_data(self):
         """return additional rhythm information"""
-        debug_log.log(
-            "Rhythm.dump_data()",
-            "returning rhythm data..."
+        logger.info(
+            msg="returning rhythm data..."
         )
         return {
             "rhythm_id":self.rhythm_id,
@@ -186,14 +186,11 @@ class Rhythm(RhythmTemplate):
         start_time = None, mirror = False
     ):
         super().__init__(rhythm_id, rhythm_category, start_time, mirror)
-        debug_log.log(
-            "Rhythm.__init__()",
-            "Rhythm object initialised [%s, %s, %s, %s]" % (
-                self.rhythm_id,
-                self.rhythm_category,
-                self.start_time,
-                self.mirror
-            )
+        logger.info(
+            msg=f"Rhythm object initialised ["
+            + f"{self.rhythm_id}, {self.rhythm_category}, "
+            + f"{self.start_time}, {self.mirror}"
+            + "]"
         )
 
 class Rest(RhythmTemplate):
@@ -202,14 +199,11 @@ class Rest(RhythmTemplate):
         self, start_time = None, duration = 4, rhythm_category = None
     ):
         super().__init__("Rest", rhythm_category, start_time, False, duration)
-        debug_log.log(
-            "Rest.__init__()",
-            "Rest object initialised [%s, %s, %s, %s]" % (
-                self.rhythm_id,
-                self.rhythm_category,
-                self.start_time,
-                self.duration
-            )
+        logger.info(
+            msg="Rest object initialised ["
+            + f"{self.rhythm_id}, {self.rhythm_category}, "
+            + f"{self.start_time}, {self.duration}"
+            + "]"
         )
 
 
@@ -229,9 +223,8 @@ def generate_rhthm_id(data):
         section += str(note_type_data[note["_type"]])
         section += str(note["_cutDirection"])
         rhythm_id += section
-    debug_log.log(
-        "generate_rhthm_id()",
-        "returning ID..."
+    logger.info(
+        msg="returning ID..."
     )
     return rhythm_id
 
@@ -251,9 +244,8 @@ def rhythm_intervals(data, duration):
                 interval
             )
     copied_data.pop()
-    debug_log.log(
-        "rhythm_intervals()",
-        "returning intervals..."
+    logger.info(
+        msg="returning intervals..."
     )
     return intervals
 
@@ -275,9 +267,8 @@ def rhythm_load(filepath=None):
     ))
     # If category generated does not already exist, create new directory
     if rhythm_category not in listdir(rhythm_directory()):
-        debug_log.log(
-            "rhythm_import_file()",
-            "rhythm_category does not exist - creating new directory..."
+        logger.info(
+            msg="rhythm_category does not exist - creating new directory..."
         )
         mkdir(rhythm_directory(rhythm_category))
         return (
@@ -315,9 +306,8 @@ def rhythm_save(rhythm_id, rhythm_category, rhythm_data):
     rhythm_file_id = rhythm_directory(rhythm_category, rhythm_id)
     with open(rhythm_file_id, "w") as rhythm_file:
         dump(rhythm_data, rhythm_file, indent=4)
-    debug_log.log(
-        "rhythm_import_file()",
-        "Rhythm sucessfully imported"
+    logger.info(
+        msg="Rhythm sucessfully imported"
     )
     return True
 
@@ -330,14 +320,12 @@ def get_rhythm_duration(rhythm_id, rhythm_category):
         rhythm_category,
         rhythm_id
     )
-    debug_log.log(
-        "get_rhythm_duration()",
-        "Searching for %s" % rhythm_file_id
+    logger.info(
+        msg="Searching for %s" % rhythm_file_id
     )
     with open(rhythm_file_id, "r") as rhythm_file:
         rhythm_data = load(rhythm_file)
-    debug_log.log(
-        "generate_rhthm_id()",
-        "returning Rhythm duration..."
+    logger.info(
+        msg="returning Rhythm duration..."
     )
     return float(rhythm_data["duration"])
