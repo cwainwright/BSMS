@@ -112,7 +112,7 @@ class RhythmTemplate():
     def get_data_list(self):
         """get list of data for display in timeline tree"""
         start_time_string = "[%s]" % self.start_time
-        if self.rhythm_id is "Rest":
+        if self.rhythm_id == "Rest":
             name_string = "%s beats" % self.duration
             type_string = "Rest"
         else:

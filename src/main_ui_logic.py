@@ -312,7 +312,7 @@ class RestTabLogic:
             self.populate_internal()
             rest = custom_rest_input.get_information()
             if rest in self.i_tree["Custom"]:
-                custom_rest_input.change_title_text(
+                custom_rest_input.user_interface.nameEdit.setText(
                     "Duplicate item was found\nPlease try again:"
                 )
             else:

@@ -54,10 +54,6 @@ class RestInputWindow(TemplateDialogWindow):
     def __init__(self, message, title="rest"):
         super().__init__(message, title, Ui_RestInput)
 
-    def change_title_text(self, message):
-        """change title text"""
-        self.user_interface.titleLabel.setText(message)
-
     def set_information(self, rest):
         """set defaults"""
         name = rest["Name"]
@@ -73,3 +69,8 @@ class RestInputWindow(TemplateDialogWindow):
                 "Name":name,
                 "Duration":duration
             }
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(["my_app"])
+    rest_input_window = RestInputWindow("rest input")
+    # rest_input_window.run()
