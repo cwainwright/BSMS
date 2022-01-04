@@ -1,17 +1,5 @@
 """ Handles initial startup processes checking the file system integrity"""
-import logging
-from os import path
-
 from directory_operations import bsms_directory, directory_verification, logger
-
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(message)s",
-    filename=path.join("logs", "log.log"),
-    filemode="a",
-    level=logging.DEBUG
-)
-
-logger = logging.getLogger("bootstrap")
 
 def setup():
     """Initial setup function"""

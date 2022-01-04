@@ -3,7 +3,6 @@ import sys
 from copy import deepcopy
 from json import dump, load
 from os import listdir, path
-import logging
 
 from PyQt5 import QtCore, QtWidgets
 

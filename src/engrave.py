@@ -14,10 +14,6 @@ def engraved_beat_maps_directory(project_name):
         "engravedBeatMaps"
     )
 
-
-#   #   #   #   Engrave Note    #   #   #   #
-# IMPORTANT: Objects must have offset preapplied
-# to their time values before they are engraved!
 def beatmap(
     project_name,
     version="2.0.0",

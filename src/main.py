@@ -1,7 +1,5 @@
 """main program script"""
 import sys
-from os import path
-import logging
 
 from PyQt5 import QtWidgets
 

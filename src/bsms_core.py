@@ -4,7 +4,6 @@
  - finalise()
  - apply_beat_offset()"""
 
-import logging
 from json import dump, load
 from math import ceil
 from os import listdir, mkdir, path
@@ -16,15 +15,6 @@ from numpy import append, shape, zeros
 from soundfile import read, write
 
 from directory_operations import bsms_directory, logger
-
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(message)s",
-    filename=path.join("logs", "log.log"),
-    filemode="a",
-    level=logging.DEBUG
-)
-
-logger = logging.getLogger("bsms_core")
 
 def projects_directory(project_name=None):
     """returns projects directory"""
