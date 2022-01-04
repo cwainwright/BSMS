@@ -5,17 +5,7 @@ from os import listdir, mkdir, path
 
 from bsms_core import projects_directory
 from dialog_window_logic import DialogWindow, InputWindow
-
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(message)s",
-    filename=path.join(
-        "logs",
-        f"{__name__}.log"
-    ),
-    filemode="a"
-)
-
-logger = logging.getLogger(__name__)
+from directory_operations import logger
 
 def engraved_beat_maps_directory(project_name):
     """return engraved_beat_maps_directory"""

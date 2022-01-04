@@ -2,21 +2,11 @@
 from json import dump, load
 from os import path
 from typing import Union
-import logging
 
 from bsms_core import projects_directory
 from rhythms import Rest, Rhythm
 
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(message)s",
-    filename=path.join(
-        "logs",
-        f"{__name__}.log"
-    ),
-    filemode="a"
-)
-
-logger = logging.getLogger(__name__)
+from directory_operations import logger
 
 """
 rhythm_index:

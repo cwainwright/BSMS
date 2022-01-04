@@ -2,18 +2,8 @@
 from copy import deepcopy
 from json import dump, load
 from os import listdir, mkdir, path
-import logging
 
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(message)s",
-    filename=path.join(
-        "logs",
-        f"{__name__}.log"
-    ),
-    filemode="a"
-)
-
-logger = logging.getLogger(__name__)
+from directory_operations import logger
 
 # Each rhythm will be stored within its own JSON file
 def rhythm_directory(category = None, rhythm_id = None):

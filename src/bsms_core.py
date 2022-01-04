@@ -15,18 +15,16 @@ from librosa import load as libload
 from numpy import append, shape, zeros
 from soundfile import read, write
 
-from directory_operations import bsms_directory
+from directory_operations import bsms_directory, logger
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s: %(message)s",
-    filename=path.join(
-        "logs",
-        f"{__name__}.log"
-    ),
-    filemode="a"
+    filename=path.join("logs", "log.log"),
+    filemode="a",
+    level=logging.DEBUG
 )
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("bsms_core")
 
 def projects_directory(project_name=None):
     """returns projects directory"""

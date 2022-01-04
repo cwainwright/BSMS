@@ -25,17 +25,7 @@ from rhythms import (
 )
 from timeline import Timeline
 from ui.main_ui import Ui_MainWindow
-
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(message)s",
-    filename=path.join(
-        "logs",
-        f"{__name__}.log"
-    ),
-    filemode="a"
-)
-
-logger = logging.getLogger(__name__)
+from directory_operations import logger
 
 # Window Class
 class MainWindow:
@@ -311,12 +301,7 @@ class RestTabLogic:
             # Gather up-to-date json contents
             self.populate_internal()
             rest = custom_rest_input.get_information()
-            if rest in self.i_tree["Custom"]:
-                custom_rest_input.user_interface.nameEdit.setText(
-                    "Duplicate item was found\nPlease try again:"
-                )
-            else:
-                self.i_tree["Custom"].append(rest)
+            self.i_tree["Custom"].append(rest)
             with open(self.json_filepath, "w") as rests_json:
                 dump(self.i_tree, rests_json, indent=4)
             self.refresh_selected()

@@ -10,17 +10,7 @@ from directory_operations import cleanup
 from bsms_core import LibCache, import_song
 from main_ui_logic import DialogWindow, InputWindow, MainWindowLogic
 from start_ui_logic import MetadataLogic, QuickstartLogic
-
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(message)s",
-    filename=path.join(
-        "logs",
-        f"{__name__}.log"
-    ),
-    filemode="a"
-)
-
-logger = logging.getLogger(__name__)
+from directory_operations import logger
 
 def main():
     """main functions"""
@@ -69,5 +59,6 @@ def main():
     else:
         sys.exit()
 
-while True:
-    main()
+if __name__ == "__main__":
+    while True:
+        main()
