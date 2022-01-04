@@ -1,11 +1,12 @@
 """main program script"""
 import sys
-from os import listdir, path, remove, rmdir
+from os import path
 import logging
 
 from PyQt5 import QtWidgets
 
 from bootstrap import setup
+from directory_operations import cleanup
 from bsms_core import LibCache, import_song
 from main_ui_logic import DialogWindow, InputWindow, MainWindowLogic
 from start_ui_logic import MetadataLogic, QuickstartLogic
@@ -20,12 +21,6 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-
-def cleanup(project_directory):
-    """clean up half-complete project directories"""
-    for file in listdir(project_directory):
-        remove(path.join(project_directory, file))
-    rmdir(project_directory)
 
 def main():
     """main functions"""

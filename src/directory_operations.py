@@ -1,4 +1,4 @@
-from os import path, mkdir
+from os import path, mkdir, listdir, remove, rmdir, isfile
 
 import logging
 
@@ -12,6 +12,15 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+def cleanup(project_directory):
+    """clean up half-complete project directories"""
+    for file in listdir(project_directory):
+        if isfile(file):
+            remove(path.join(project_directory, file))
+        else:
+            cleanup(file)
+    rmdir(project_directory)
 
 def bsms_directory(sub_directory = None):
     """return user documents directory"""
