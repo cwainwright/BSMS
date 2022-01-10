@@ -2,6 +2,8 @@ from os import path, mkdir, listdir, remove, rmdir
 
 import logging
 
+DEV = False
+
 logging.basicConfig(
     format="%(asctime)s %(levelname)s: %(message)s",
     filename=path.join("logs", "log.log"),
@@ -10,10 +12,11 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger("log")
-console = logging.StreamHandler()
-console.level = logging.INFO
-console.setFormatter(logging.Formatter("%(message)s"))
-logger.addHandler(console)
+if DEV:
+    console = logging.StreamHandler()
+    console.level = logging.DEBUG
+    console.setFormatter(logging.Formatter("%(message)s"))
+    logger.addHandler(console)
 
 def cleanup(project_directory):
     """clean up half-complete project directories"""
