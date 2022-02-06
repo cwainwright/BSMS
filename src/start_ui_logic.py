@@ -66,7 +66,7 @@ class QuickstartLogic:
         quickstart_ui.recentsListWidget.itemDoubleClicked.connect(
             self.item_double_clicked)
 
-        # Run app
+        # Run window
         self.quickstart_window.window.exec_()
 
     def populate_internal(self):

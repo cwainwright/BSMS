@@ -25,13 +25,13 @@ def main():
     elif project_directory is None:
         project_name_input = InputWindow("Input Project_Name")
         if not project_name_input.run():
-            return
+            return [0]
         project_name = project_name_input.user_interface.fieldInput.text()
         song_file_path = QtWidgets.QFileDialog.getOpenFileName(
             filter="Sound File (*.wav; *.flac; *.ogg)"
         )[0]
         if project_name == "" or song_file_path == "":
-            return
+            return [0]
         import_song_dialog_window = DialogWindow(
             "Ready to import/analyse song"
             + "\nNote: this may take a while"
@@ -57,6 +57,9 @@ def main():
     else:
         sys.exit()
 
-if __name__ == "__main__":
-    while True:
-        main()
+# def launch_quickstart_window(app, shortcut):
+#     quickstart_window_logic = QuickstartLogic(app=app)
+
+# def new_project(app):
+
+main()
