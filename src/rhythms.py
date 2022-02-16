@@ -28,34 +28,38 @@ class RObject():
             self,
             rhythm_id,
             rhythm_category,
-            start_time = None,
             mirror = False,
             duration = None
     ):
         self.rhythm_id = rhythm_id
         self.rhythm_category = rhythm_category
-        self.start_time = start_time
         self.mirror = mirror
-        self.note_data = []
         self.duration = duration
+        self.note_data = []
 
     def __dict__(self) -> dict:
         """Returns note data"""
         return {"note_data": self.note_data, "duration": self.duration}
 
     def __str__(self) -> str:
-        return f"{self.rhythm_id} {self.rhythm_category}"
+        return f"{self.rhythm_id}, {self.rhythm_category}"
 
     def __repr__(self) -> str:
         return f"{self.note_data}"
+
+    def __iter__(self) -> list:
+        return [self.rhythm_id, self.rhythm_category]
 
 
 
 class Rhythm(RObject):
     """Rhythm Object"""
-    def __init__(self, rhythm_id, rhythm_category, mirror):
+    def __init__(self, rhythm_id, rhythm_category, mirror, rhythm_data = None):
         super().__init__(rhythm_id, rhythm_category, mirror)
-        self.rhythm_data = self.load_data()
+        if rhythm_data is None:
+            self.rhythm_data = self.load_data()
+        else:
+            self.rhythm_data = rhythm_data
 
     def update_data(self, rhythm_data) -> bool:
         """Update Rhythm data"""
@@ -70,6 +74,7 @@ class Rhythm(RObject):
         except FileNotFoundError:
             logger.critical(f"Rhythm file {self.rhythm_id + self.rhythm_category} not found")
             raise FileNotFoundError
+        logger.info(f"Rhythm file {self.rhythm_id + self.rhythm_category} loaded")
         return rhythm_data
 
     def save_data(self) -> bool:
@@ -77,11 +82,12 @@ class Rhythm(RObject):
         with open(rhythm_directory(self.rhythm_category, self.rhythm_id), "w") as rhythm_file:
             dump(self.rhythm_data, rhythm_file)
         return True
-    
+
+
 class Rest(RObject):
     """Rest Object"""
-    def __init__(self, rhythm_id, duration):
-        super().__init__(rhythm_id, "Rest", mirror=False, duration=duration)
+    def __init__(self, rest_id, duration):
+        super().__init__(rest_id, "Rest", mirror=False, duration=duration)
         self.rhythm_data = self.load_data()
 
     def load_data(self) -> dict:
@@ -91,6 +97,34 @@ class Rest(RObject):
         with open(rest_directory(self.rhythm_id), "w") as rest_file:
             dump(self.rhythm_data, rest_file)
         return True
+
+
+class Section():
+    """Section Object, contains Rhythms and Rests"""
+    def __init__(self, section_type: str, number: int):
+        self.section_type = section_type.split(" ")[0].title()
+        self.number = number
+        self.contents = []
+
+    def __iter__(self) -> list:
+        return self.contents
+
+    def __str__(self) -> str:
+        return f"{self.section_type} {self.number}"
+
+    def __repr__(self) -> str:
+        return f"Section: {self.section_type} {self.number}"
+
+    def add_robject(self, rhythm):
+        """Add Rhythm to Section"""
+        self.contents.append(rhythm)
+        return True
+
+    def remove_robject(self, index):
+        """Remove Rhythm from Section"""
+        self.contents.pop(index)
+        return True
+
 
 # Finds intervals between each rhythm
 def rhythm_intervals(data, duration):

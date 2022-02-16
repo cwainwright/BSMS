@@ -1,37 +1,36 @@
-from json import dump, load
+from json import dumps, load
 from os import path
 
-from src.directory_operations import logger
-from src.project import Project
-from src.rhythms import Rhythm
+try:
+    from src.directory_operations import logger
+    from src.project import Project
+    from src.rhythms import Rhythm
+except ModuleNotFoundError:
+    from directory_operations import logger
+    from rhythms import Rhythm
 
 
 class Timeline:
-    def __init__(self, project: Project):
+    def __init__(self, project):
         self.project = project
         self.sections = []
-        self.length = None
-    
+        if "timeline.json" not in self.project.zip.namelist():
+            with self.project.zip.open("timeline.json", "w") as timeline_file:
+                timeline_file.write(dumps(timeline_template, indent=2).encode("utf-8"))
+
     def load(self):
-        try:
-            with open(path.join(self.project.filepath, "timeline.json"), "r") as timeline_file:
-                timeline = dict(load(timeline_file))
-            logger.info("Timeline loaded")
-            return timeline
-        except FileNotFoundError:
-            logger.warning("Timeline file not found")
-            return {"sections": [], "length": 0.0}
+        with self.project.zip.open("timeline.json", "r") as timeline_file:
+            self.sections = load(timeline_file).get("sections")
 
     def save(self):
-        logger.info("Saving timeline...")
-        with open(path.join(self.project.filepath, "timeline.json"), "w") as timeline_file:
-            dump({"sections": self.sections, "length": self.length}, timeline_file)
-    
-    def add_section(self, name: str, index: int):
-        section = {"name": name, "rhythms": []}
-        self.sections.append(section)
-        return True
+        with self.project.zip.open("timeline.json", "w") as timeline_file:
+            timeline_file.write(dumps({"sections": self.sections}))
 
-    def add_rhythm(self, rhythm: Rhythm, section_index: int):
-        self.sections[section_index]["rhythms"].append(rhythm)
-        return True
+    def add_section(self, section_name):
+        self.sections.append({"name": section_name, "rhythms": []})
+        self.save()
+    
+    def remove_section(self, section_name):
+        self.sections.remove(section_name)
+
+timeline_template = load(open("src/templates.json", "r")).get("timeline")
