@@ -6,6 +6,7 @@ def setup():
     filepaths = [
         bsms_directory(),
         bsms_directory("Rhythms"),
+        bsms_directory("Rests"),
         bsms_directory("Projects"),
         bsms_directory("Finalised Projects")
     ]
