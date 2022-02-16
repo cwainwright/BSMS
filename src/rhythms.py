@@ -99,33 +99,6 @@ class Rest(RObject):
         return True
 
 
-class Section():
-    """Section Object, contains Rhythms and Rests"""
-    def __init__(self, section_type: str, number: int):
-        self.section_type = section_type.split(" ")[0].title()
-        self.number = number
-        self.contents = []
-
-    def __iter__(self) -> list:
-        return self.contents
-
-    def __str__(self) -> str:
-        return f"{self.section_type} {self.number}"
-
-    def __repr__(self) -> str:
-        return f"Section: {self.section_type} {self.number}"
-
-    def add_robject(self, rhythm):
-        """Add Rhythm to Section"""
-        self.contents.append(rhythm)
-        return True
-
-    def remove_robject(self, index):
-        """Remove Rhythm from Section"""
-        self.contents.pop(index)
-        return True
-
-
 # Finds intervals between each rhythm
 def rhythm_intervals(data, duration):
     """return rhythm_intervals"""

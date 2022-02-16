@@ -20,7 +20,10 @@ class Timeline:
 
     def load(self):
         with self.project.zip.open("timeline.json", "r") as timeline_file:
-            self.sections = load(timeline_file).get("sections")
+            for section in load(timeline_file).get("sections"):
+                self.sections.append(Section(section["name"]))
+                for robject in section["contents"]:
+                    self.sections[-1].add_robject(Rhythm(*robject))
 
     def save(self):
         with self.project.zip.open("timeline.json", "w") as timeline_file:
@@ -32,5 +35,46 @@ class Timeline:
     
     def remove_section(self, section_name):
         self.sections.remove(section_name)
+
+    def add_rhythm(self, section_index, rhythm):
+        try:
+            self.sections[section_index]["contents"].append(rhythm)
+        except IndexError:
+            return False
+        return True
+
+    def remove_rhythm(self, section_index, rhythm_index):
+        try:
+            self.sections[section_index]["contents"].remove(rhythm_index)
+        except IndexError:
+            return False
+        return True
+
+
+class Section():
+    """Section Object, contains Rhythms and Rests"""
+    def __init__(self, section_type: str):
+        self.section_type = section_type.split(" ")[0].title()
+        self.contents = []
+
+    def __iter__(self) -> list:
+        return self.contents
+
+    def __str__(self) -> str:
+        return f"{self.section_type}"
+
+    def __repr__(self) -> str:
+        return f"Section: {self.section_type}"
+
+    def add_robject(self, rhythm):
+        """Add Rhythm to Section"""
+        self.contents.append(rhythm)
+        return True
+
+    def remove_robject(self, index):
+        """Remove Rhythm from Section"""
+        self.contents.pop(index)
+        return True
+
 
 timeline_template = load(open("src/templates.json", "r")).get("timeline")
