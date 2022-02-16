@@ -27,7 +27,7 @@ class Timeline:
 
     def save(self):
         with self.project.zip.open("timeline.json", "w") as timeline_file:
-            timeline_file.write(dumps({"sections": self.sections}))
+            timeline_file.write(dumps({"sections": [dict(section) for section in self.sections]}))
 
     def add_section(self, section_name):
         self.sections.append(Section(section_name))
