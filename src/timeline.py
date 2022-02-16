@@ -3,7 +3,6 @@ from os import path
 
 try:
     from src.directory_operations import logger
-    from src.project import Project
     from src.rhythms import Rhythm
 except ModuleNotFoundError:
     from directory_operations import logger
