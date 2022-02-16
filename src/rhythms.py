@@ -38,8 +38,8 @@ class RObject():
         self.note_data = []
 
     def __dict__(self) -> dict:
-        """Returns note data"""
-        return {"note_data": self.note_data, "duration": self.duration}
+        """Return RObject as dictionary"""
+        return {"rhythm_id": self.rhythm_id, "rhythm_category": self.rhythm_category, "mirror": self.mirror}
 
     def __str__(self) -> str:
         return f"{self.rhythm_id}, {self.rhythm_category}"

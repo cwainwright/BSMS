@@ -30,22 +30,23 @@ class Timeline:
             timeline_file.write(dumps({"sections": self.sections}))
 
     def add_section(self, section_name):
-        self.sections.append({"name": section_name, "rhythms": []})
+        self.sections.append(Section(section_name))
         self.save()
     
     def remove_section(self, section_name):
         self.sections.remove(section_name)
+        self.save()
 
     def add_rhythm(self, section_index, rhythm):
         try:
-            self.sections[section_index]["contents"].append(rhythm)
+            self.sections[section_index].add_robject(rhythm)
         except IndexError:
             return False
         return True
 
     def remove_rhythm(self, section_index, rhythm_index):
         try:
-            self.sections[section_index]["contents"].remove(rhythm_index)
+            self.sections[section_index].remove_robject(rhythm_index)
         except IndexError:
             return False
         return True
@@ -75,6 +76,10 @@ class Section():
         """Remove Rhythm from Section"""
         self.contents.pop(index)
         return True
+
+    def __dict__(self):
+        """Return Section as Dictionary"""
+        return {"name": self.section_type, "contents": [dict(rhythm) for rhythm in self.contents]}
 
 
 timeline_template = load(open("src/templates.json", "r")).get("timeline")
