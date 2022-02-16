@@ -27,9 +27,9 @@ def cleanup(project_directory):
             cleanup(file)
     rmdir(project_directory)
 
-def bsms_directory(sub_directory = None):
+def bsms_directory(*sub_directories):
     """return user documents directory"""
-    if sub_directory is None:
+    if sub_directories == []:
         logger.info(
             msg="no sub_directory was provided, "
             + "defaulting to BSMS home directory"
@@ -44,16 +44,16 @@ def bsms_directory(sub_directory = None):
             path.expanduser('~'),
             "Documents",
             "BSMS",
-            sub_directory
+            *sub_directories
         )
         if path.exists(file_path):
             logger.info(
-                msg= f"sub_directory {sub_directory} found, "
+                msg= f"sub_directory {sub_directories} found, "
                 + "returning full path"
             )
         else:
             logger.warning(
-                msg= f"sub_directory {sub_directory} not found, "
+                msg= f"sub_directory {sub_directories} not found, "
                 + "defaulting to BSMS home directory"
             )
             file_path = path.join(
@@ -62,6 +62,30 @@ def bsms_directory(sub_directory = None):
                 "BSMS"
             )
     return file_path
+
+def rhythm_directory(category = None, rhythm_id = None):
+    """Returns rhythm directory"""
+    if category is None:
+        filepath = bsms_directory("Rhythms")
+    elif rhythm_id is None:
+        filepath = bsms_directory("Rhythms", category)
+    else:
+        filepath = bsms_directory(
+            "Rhythms", category,
+            rhythm_id + ".json"
+        )
+    return filepath
+
+def rest_directory(rest_id = None):
+    """return rest file"""
+    if rest_id is None:
+        filepath = bsms_directory("Rests", "Custom")
+    else:
+        filepath = bsms_directory(
+            "Rests", "Custom", 
+            rest_id + ".json"
+        )
+    return filepath
 
 def directory_verification(directory):
     """check for directory"""

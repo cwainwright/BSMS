@@ -1,5 +1,4 @@
 """Engrave toolset"""
-import logging
 from json import dump
 from os import listdir, mkdir, path
 

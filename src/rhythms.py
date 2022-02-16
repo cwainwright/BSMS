@@ -3,36 +3,7 @@ from copy import deepcopy
 from json import dump, load
 from os import listdir, mkdir, path
 
-from directory_operations import logger
-
-# Each rhythm will be stored within its own JSON file
-def rhythm_directory(category = None, rhythm_id = None):
-    """Returns rhythm directory"""
-    if category is None:
-        filepath = path.join(
-            path.expanduser('~'),
-            "Documents",
-            "BSMS",
-            "Rhythms"
-        )
-    elif rhythm_id is None:
-        filepath = path.join(
-            path.expanduser('~'),
-            "Documents",
-            "BSMS",
-            "Rhythms",
-            category
-        )
-    else:
-        filepath = path.join(
-            path.expanduser('~'),
-            "Documents",
-            "BSMS",
-            "Rhythms",
-            category,
-            rhythm_id
-        )
-    return filepath
+from directory_operations import logger, rhythm_directory, rest_directory
 
 """
 Rhythm JSON format
@@ -51,172 +22,75 @@ Note: _time key is relative to start of rhythm, not song
 }
 """
 
-class RhythmTemplate():
+class RObject():
     """Template for Rhythm and Rest Objects"""
     def __init__(
             self,
             rhythm_id,
             rhythm_category,
-            start_time,
-            mirror,
+            start_time = None,
+            mirror = False,
             duration = None
     ):
+        self.rhythm_id = rhythm_id
         self.rhythm_category = rhythm_category
         self.start_time = start_time
         self.mirror = mirror
+        self.note_data = []
         self.duration = duration
-        if rhythm_id == "Rest":
-            self.rhythm_id = rhythm_id
-            self.note_data = []
-        else:
-            self.rhythm_id = rhythm_id.strip(".json")
-            self.rhythm_file_id = rhythm_directory(
-                self.rhythm_category,
-                self.rhythm_id+".json"
-            )
 
-            category_path = rhythm_directory(self.rhythm_category)
-            logger.info(
-                    msg=f"Checking for: {category_path}"
-                )
-            if not path.exists(category_path):
-                logger.info(
-                    msg=f"Category could not be found ({self.rhythm_category})"
-                )
-                raise FileNotFoundError("Category could not be found")
+    def __dict__(self) -> dict:
+        """Returns note data"""
+        return {"note_data": self.note_data, "duration": self.duration}
 
-            logger.info(
-                    msg=f"Checking for: {self.rhythm_file_id}"
-                )
-            if not path.exists(self.rhythm_file_id):
-                logger.critical(
-                    msg=f"Rhythm could not be found in category ({self.rhythm_id}.json)"
-                )
-                raise FileNotFoundError("Rhythm could not be found in category")
+    def __str__(self) -> str:
+        return f"{self.rhythm_id} {self.rhythm_category}"
 
-            with open(self.rhythm_file_id, "r") as rhythm_file:
-                rhythm_data = load(rhythm_file)
-                self.note_data = rhythm_data["note_data"]
-                self.duration = rhythm_data["duration"]
-
-    def get_data_list(self):
-        """get list of data for display in timeline tree"""
-        start_time_string = "[%s]" % self.start_time
-        if self.rhythm_id == "Rest":
-            name_string = "%s beats" % self.duration
-            type_string = "Rest"
-        else:
-            name_string = str(self.rhythm_id)
-            type_string = "Rhythm"
-        if self.rhythm_category is None:
-            category_string = "N/A"
-        else:
-            category_string = str(self.rhythm_category)
-        return (
-            start_time_string,
-            name_string,
-            category_string,
-            type_string,
-            str(float(self.duration))
-        )
-
-    def get_start_time(self):
-        """return start_time"""
-        return self.start_time
-
-    def get_end_time(self):
-        """return start_time + duration"""
-        return self.start_time + self.duration
-
-    def __normalise(self, data):
-        """return normalised items"""
-        logger.info(
-            msg=f"{str(self.identify())}, normalising..."
-        )
-        normalised_items = deepcopy(data)
-        for item in normalised_items:
-            if self.mirror:
-                item["_lineIndex"] = 3-item["_lineIndex"]
-                if item["_type"] != 3:
-                    item["_type"] = 1 - item["_type"]
-                if item["_cutDirection"] not in [0, 1, 8]:
-                    if item["_cutDirection"]%2==0:
-                        item["_cutDirection"] += 1
-                    else:
-                        item["_cutDirection"] -= 1
-            item["_time"] += self.start_time
-        return normalised_items
-
-    def normalise_notes(self):
-        """return normalised notes"""
-        return self.__normalise(self.note_data)
-
-    def identify(self):
-        """return rhythm_id and rhythm_category"""
-        return (self.rhythm_id, self.rhythm_category)
-
-    def dump_data(self):
-        """return additional rhythm information"""
-        logger.info(
-            msg="returning rhythm data..."
-        )
-        return {
-            "rhythm_id":self.rhythm_id,
-            "rhythm_category":self.rhythm_category,
-            "start_time":self.start_time,
-            "mirror":self.mirror,
-            "duration":self.duration
-        }
-
-class Rhythm(RhythmTemplate):
-    """Storage method of rhythm file"""
-    # Initialise on addition into timeline
-    def __init__(
-        self, rhythm_id, rhythm_category,
-        start_time = None, mirror = False
-    ):
-        super().__init__(rhythm_id, rhythm_category, start_time, mirror)
-        logger.info(
-            msg=f"Rhythm object initialised ["
-            + f"{self.rhythm_id}, {self.rhythm_category}, "
-            + f"{self.start_time}, {self.mirror}"
-            + "]"
-        )
-
-class Rest(RhythmTemplate):
-    """Rest - an empty Rhythm"""
-    def __init__(
-        self, start_time = None, duration = 4, rhythm_category = None
-    ):
-        super().__init__("Rest", rhythm_category, start_time, False, duration)
-        logger.info(
-            msg="Rest object initialised ["
-            + f"{self.rhythm_id}, {self.rhythm_category}, "
-            + f"{self.start_time}, {self.duration}"
-            + "]"
-        )
+    def __repr__(self) -> str:
+        return f"{self.note_data}"
 
 
-# Add additional functions required for Rest to be parsed as empty Rhythm
 
+class Rhythm(RObject):
+    """Rhythm Object"""
+    def __init__(self, rhythm_id, rhythm_category, mirror):
+        super().__init__(rhythm_id, rhythm_category, mirror)
+        self.rhythm_data = self.load_data()
 
-# Generate unique identifier for rhythm
-def generate_rhthm_id(data):
-    """generate_rhythm_id (depreciated)"""
-    rhythm_id = ""
-    # Left, Right, Unused, Bomb
-    note_type_data = ["L", "R", "U", "B"]
-    for note in data["note_data"]:
-        section = str(note["_time"])
-        section += str(note["_lineIndex"])
-        section += str(note["_lineLayer"])
-        section += str(note_type_data[note["_type"]])
-        section += str(note["_cutDirection"])
-        rhythm_id += section
-    logger.info(
-        msg="returning ID..."
-    )
-    return rhythm_id
+    def update_data(self, rhythm_data) -> bool:
+        """Update Rhythm data"""
+        self.rhythm_data = rhythm_data
+        return self.save_data()
+
+    def load_data(self) -> dict:
+        """Load Rhythm data from JSON"""
+        try:
+            with open(rhythm_directory(self.rhythm_category, self.rhythm_id), "r") as rhythm_file:
+                rhythm_data = dict(load(rhythm_file))
+        except FileNotFoundError:
+            logger.critical(f"Rhythm file {self.rhythm_id + self.rhythm_category} not found")
+            raise FileNotFoundError
+        return rhythm_data
+
+    def save_data(self) -> bool:
+        """Save Rhythm data to JSON"""
+        with open(rhythm_directory(self.rhythm_category, self.rhythm_id), "w") as rhythm_file:
+            dump(self.rhythm_data, rhythm_file)
+        return True
+    
+class Rest(RObject):
+    """Rest Object"""
+    def __init__(self, rhythm_id, duration):
+        super().__init__(rhythm_id, "Rest", mirror=False, duration=duration)
+        self.rhythm_data = self.load_data()
+
+    def load_data(self) -> dict:
+        return {"note_data": [], "duration": self.duration}
+
+    def save_data(self) -> bool:
+        with open(rest_directory(self.rhythm_id), "w") as rest_file:
+            dump(self.rhythm_data, rest_file)
+        return True
 
 # Finds intervals between each rhythm
 def rhythm_intervals(data, duration):

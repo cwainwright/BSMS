@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>694</width>
+    <width>928</width>
     <height>566</height>
    </rect>
   </property>
@@ -24,7 +24,7 @@
     <item row="0" column="0" rowspan="10">
      <widget class="QTabWidget" name="presetsTabs">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="rhythmsTab">
        <attribute name="icon">
@@ -747,8 +747,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>694</width>
-     <height>21</height>
+     <width>928</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
