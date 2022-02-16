@@ -16,34 +16,40 @@ class Timeline:
         if "timeline.json" not in self.project.zip.namelist():
             with self.project.zip.open("timeline.json", "w") as timeline_file:
                 timeline_file.write(dumps(timeline_template, indent=2).encode("utf-8"))
+        self.load()
 
-    def load(self):
+    def load(self) -> bool:
         with self.project.zip.open("timeline.json", "r") as timeline_file:
             for section in load(timeline_file).get("sections"):
                 self.sections.append(Section(section["name"]))
                 for robject in section["contents"]:
                     self.sections[-1].add_robject(Rhythm(*robject))
+        return True
 
-    def save(self):
+    def save(self) -> bool:
         with self.project.zip.open("timeline.json", "w") as timeline_file:
             timeline_file.write(dumps({"sections": [dict(section) for section in self.sections]}))
+        return True
 
-    def add_section(self, section_name):
+    def add_section(self, section_name) -> bool:
         self.sections.append(Section(section_name))
-        self.save()
+        return True
     
-    def remove_section(self, section_name):
-        self.sections.remove(section_name)
-        self.save()
+    def remove_section(self, section_name) -> bool:
+        try:
+            self.sections.remove(section_name)
+        except IndexError:
+            return False
+        return True
 
-    def add_rhythm(self, section_index, rhythm):
+    def add_rhythm(self, section_index, rhythm) -> bool:
         try:
             self.sections[section_index].add_robject(rhythm)
         except IndexError:
             return False
         return True
 
-    def remove_rhythm(self, section_index, rhythm_index):
+    def remove_rhythm(self, section_index, rhythm_index) -> bool:
         try:
             self.sections[section_index].remove_robject(rhythm_index)
         except IndexError:
@@ -66,19 +72,19 @@ class Section():
     def __repr__(self) -> str:
         return f"Section: {self.section_type}"
 
-    def add_robject(self, rhythm):
+    def __dict__(self) -> dict:
+        """Return Section as Dictionary"""
+        return {"name": self.section_type, "contents": [dict(rhythm) for rhythm in self.contents]}
+
+    def add_robject(self, rhythm) -> bool:
         """Add Rhythm to Section"""
         self.contents.append(rhythm)
         return True
 
-    def remove_robject(self, index):
+    def remove_robject(self, index) -> bool:
         """Remove Rhythm from Section"""
         self.contents.pop(index)
         return True
-
-    def __dict__(self):
-        """Return Section as Dictionary"""
-        return {"name": self.section_type, "contents": [dict(rhythm) for rhythm in self.contents]}
 
 
 timeline_template = load(open("src/templates.json", "r")).get("timeline")
