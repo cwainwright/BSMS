@@ -48,19 +48,13 @@ def bsms_directory(*sub_directories):
         )
         if path.exists(file_path):
             logger.info(
-                msg= f"sub_directory {sub_directories} found, "
-                + "returning full path"
+                msg= f"sub_directory {sub_directories} found"
             )
         else:
             logger.warning(
-                msg= f"sub_directory {sub_directories} not found, "
-                + "defaulting to BSMS home directory"
+                msg= f"sub_directory {sub_directories} not found"
             )
-            file_path = path.join(
-                path.expanduser('~'),
-                "Documents",
-                "BSMS"
-            )
+    logger.info("returning file path")
     return file_path
 
 def rhythm_directory(category = None, rhythm_id = None):
