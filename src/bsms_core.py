@@ -16,11 +16,6 @@ from soundfile import read, write
 
 from directory_operations import bsms_directory, logger
 
-def projects_directory(project_name=None):
-    """returns projects directory"""
-    if project_name is None:
-        return bsms_directory("Projects")
-    return path.join(projects_directory(), project_name)
 
 #   #   #   #   Import Song #   #   #   #
 def import_song(project_name: str = None, file_path: str = None):
@@ -85,19 +80,19 @@ def import_song(project_name: str = None, file_path: str = None):
 
     # Make project directory if it doesn't already exist
     logger.info(msg="checking for project directory...")
-    if project_name not in listdir(projects_directory()):
-        mkdir(projects_directory(project_name))
+    if project_name not in listdir(bsms_directory("Projects")):
+        mkdir(bsms_directory("Projects", project_name))
         logger.info(msg="new project directory created")
 
     # Writes final song file with beat_offset to new "song.wav"
     logger.info(msg="writing updated songfile...")
     write(
-        path.join(projects_directory(project_name), "song.wav"),
+        bsms_directory(project_name, "song.wav"),
         data=new_song_file,
         samplerate=sample_rate
     )
     logger.info(msg="songfile written")
-    return (projects_directory(project_name), additional_beats+sync_beats)
+    return additional_beats+sync_beats
 
 #   #   #   #   Libcache    #   #   #   #
 class LibCache:
@@ -181,11 +176,8 @@ class LibCache:
 def finalise(project_name, image_file_directory):
     """Copies project contents into copy_destination directory"""
     # Input sanitise copy_destination
-    project_directory = projects_directory(project_name)
-    copy_destination = path.join(
-        bsms_directory("Finalised Projects"),
-        project_name
-    )
+    project_directory = bsms_directory("Projects", project_name)
+    copy_destination = bsms_directory("Finalised Projects", project_name)
     # If project_name directory is not found, create one
     logger.info(msg="checking for project in copy destination...")
     if project_name not in listdir(bsms_directory("Finalised Projects")):
