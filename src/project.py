@@ -23,4 +23,3 @@ class Project:
 
 if __name__ == "__main__":
     project = Project("test")
-    project.timeline.save()
