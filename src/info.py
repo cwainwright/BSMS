@@ -32,6 +32,12 @@ class Info:
             info = load(info_file).update(info)
             info_file.write(dumps(info))
 
+    def get(self, keyname, value):
+        try:
+            return self[keyname]
+        except KeyError:
+            return value
+
 
 info_template = load(open("src/templates.json", "r")).get("info")
 
