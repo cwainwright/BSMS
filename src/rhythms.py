@@ -199,9 +199,9 @@ def rhythm_intervals(note_data: list, duration: float) -> list:
 
 
 if __name__ == "__main__":
-    rest_one = construct_robject("1 Beat", "Rest")
-    rest_two = construct_robject("3 Beats", "Rest")
-    rhythm_one = construct_robject("[0.5, 0.5, 0.5, 0.5]", "Croissant")
+    rest_one = construct_robject("1 Beat", "Default")
+    rest_two = construct_robject("3 Beats", "Custom")
+    rhythm_one = construct_robject("Croissant", "[0.5, 0.5, 0.5, 0.5]", True)
 
     print(rest_one.to_dict())
     print(rest_two.to_dict())
