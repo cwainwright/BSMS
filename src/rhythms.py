@@ -54,9 +54,6 @@ class RObject():
     def __iter__(self) -> list:
         return [self.robject_id, self.robject_category]
 
-    def to_dict(self) -> dict:
-        return {"robject_id": self.robject_id, "robject_category": self.robject_category}
-
 
 class Rhythm(RObject):
     """Rhythm Object"""
@@ -98,8 +95,8 @@ class Rhythm(RObject):
 
 class Rest(RObject):
     """Rest Object"""
-    def __init__(self, robject_id: str):
-        super().__init__(robject_id, "Rest")
+    def __init__(self, robject_id: str, robject_category: str = "Default"):
+        super().__init__(robject_id, robject_category)
         self.note_data = []
         self.duration = 4
 
@@ -109,20 +106,29 @@ class Rest(RObject):
     def load(self) -> bool:
         """Load Rest data from JSON"""
         try:
-            with open(bsms_directory("Rests", "Default", f"{self.robject_id}.json"), "r") as rest_file:
+            with open(bsms_directory("Rests", self.robject_category, f"{self.robject_id}.json"), "r") as rest_file:
                 rest_data = dict(load(rest_file))
         except FileNotFoundError:
-            logger.info("Rest file not found in Defaults")
             try:
-                with open(bsms_directory("Rests", "Custom", f"{self.robject_id}.json"), "r") as rest_file:
-                    rest_data = dict(load(rest_file))
+                if self.robject_category == "Default":
+                    with open(bsms_directory("Rests", "Custom", f"{self.robject_id}.json"), "r") as rest_file:
+                        rest_data = dict(load(rest_file))
+                elif self.robject_category == "Custom":
+                    with open(bsms_directory("Rests", "Default", f"{self.robject_id}.json"), "r") as rest_file:
+                        rest_data = dict(load(rest_file))
+                else:
+                    logger.warning(f"Rest Category {self.robject_category} not found")
+                    return False
             except FileNotFoundError:
-                logger.warning(f"Rhythm file {self.robject_id} {self.robject_category} not found")
+                logger.warning(f"Rest file {self.robject_id} {self.robject_category} not found")
                 return False
         logger.info(f"Rhythm file {self.robject_id} {self.robject_category} loaded")
         self.note_data = rest_data.get("note_data")
         self.duration = rest_data.get("duration")
         return True
+
+    def to_dict(self) -> dict:
+        return {"robject_id": self.robject_id, "robject_category": self.robject_category}
 
     def set_mirror(self, value: bool) -> bool:
         """Pseudo-setter for mirror"""
@@ -160,9 +166,9 @@ def save_rhythm(rhythm_id, note_data, duration):
     return True
 
 # Constructs a Rhythm or Rest and returns it
-def construct_robject(robject_id: str, robject_category: str) -> Union[Rhythm, Rest]:
-    if "Rest" in robject_category:
-        robject = Rest(robject_id)
+def construct_robject(robject_id: str, robject_category: str, mirror: bool = None) -> Union[Rhythm, Rest]:
+    if mirror is None:
+        robject = Rest(robject_id, robject_category)
     else:
         robject = Rhythm(robject_id, robject_category)
     return robject
