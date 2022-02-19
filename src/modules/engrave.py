@@ -2,7 +2,10 @@
 from json import dump
 from os import listdir, mkdir, path
 
-from directory_operations import bsms_directory, logger
+try:
+    from src.modules.directory_operations import bsms_directory, logger
+except ModuleNotFoundError:
+    from directory_operations import bsms_directory, logger
 
 def beatmap(
     project_name,

@@ -2,9 +2,9 @@ from zipfile import ZipFile
 from os import path
 
 try:
-    from src.timeline import Timeline, timeline_template
-    from src.info import Info, info_template
-    from src.directory_operations import bsms_directory, logger
+    from src.modules.timeline import Timeline, timeline_template
+    from src.modules.info import Info, info_template
+    from src.modules.directory_operations import bsms_directory, logger
 except ModuleNotFoundError:
     from timeline import Timeline, timeline_template
     from info import Info, info_template
