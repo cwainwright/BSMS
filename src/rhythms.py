@@ -117,7 +117,7 @@ class Rest(RObject):
                     with open(bsms_directory("Rests", "Default", f"{self.robject_id}.json"), "r") as rest_file:
                         rest_data = dict(load(rest_file))
                 else:
-                    logger.warning(f"Rest Category {self.robject_category} not found")
+                    logger.warning(f"Rest Category {self.robject_category} not recognised")
                     return False
             except FileNotFoundError:
                 logger.warning(f"Rest file {self.robject_id} {self.robject_category} not found")
