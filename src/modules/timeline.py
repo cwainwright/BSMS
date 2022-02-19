@@ -3,8 +3,8 @@ from json import dumps, load
 from rhythms import Rest, construct_robject
 
 try:
-    from src.directory_operations import logger
-    from src.rhythms import Rhythm, Rest, save_rest
+    from src.modules.directory_operations import logger
+    from src.modules.rhythms import Rhythm, Rest, save_rest
 except ModuleNotFoundError:
     from directory_operations import logger
     from rhythms import Rhythm, Rest, save_rest
@@ -56,6 +56,7 @@ class Timeline:
         with self.project.zip.open("timeline.json", "r") as timeline_file:
             print(timeline_file)
             timeline_dict = load(timeline_file)
+            print(timeline_dict)
             for section in timeline_dict.get("sections"):
                 section_object = Section(section.get("name"))
                 for r in section.get("contents", []):
@@ -70,8 +71,11 @@ class Timeline:
             timeline_file.write(dumps(timeline, indent=2).encode("utf-8"))
         return True
 
-    def get_section(self, section_index: int) -> Section:
-        return self.sections[section_index]
+    def __getitem__(self, index: int) -> Section:
+        return self.sections[index]
+
+    def get_section(self, index: int) -> Section:
+        return self.sections[index]
 
     def add_section(self, section: Section) -> bool:
         self.sections.append(section)
@@ -97,5 +101,6 @@ timeline_template = load(open("src/templates.json", "r")).get("timeline")
 if __name__ == "__main__":
     from project import Project
     timeline = Timeline(Project("test"))
-    print(timeline.get_section(0))
-    print(timeline.get_section(0).to_dict())
+    # timeline.add_section(Section("Test_Section"))
+    # timeline.save()
+    timeline[1].to_dict()

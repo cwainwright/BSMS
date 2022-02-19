@@ -42,4 +42,6 @@ class Info:
 info_template = load(open("src/templates.json", "r")).get("info")
 
 if __name__ == "__main__":
+    from project import Project
     print(info_template)
+    info = Info(Project("test"))

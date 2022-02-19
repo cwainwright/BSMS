@@ -4,7 +4,10 @@ from typing import Union
 from json import dump, load
 from os import path
 
-from directory_operations import bsms_directory, logger
+try:
+    from src.modules.directory_operations import bsms_directory, logger
+except ModuleNotFoundError:
+    from directory_operations import bsms_directory, logger
 
 """
 Rhythm JSON format
@@ -64,7 +67,7 @@ class Rhythm(RObject):
         self.duration = 4
 
         # Load method overwrites default note_data and duration
-        self.load()
+        self.loaded = self.load()
 
     def load(self) -> bool:
         """Load Rhythm data from JSON"""
@@ -101,7 +104,7 @@ class Rest(RObject):
         self.duration = 4
 
         # Load method overwrites default duration
-        self.load()
+        self.loaded = self.load()
 
     def load(self) -> bool:
         """Load Rest data from JSON"""
@@ -199,13 +202,16 @@ def rhythm_intervals(note_data: list, duration: float) -> list:
 
 
 if __name__ == "__main__":
-    rest_one = construct_robject("1 Beat", "Default")
+    rest_one = construct_robject("1 Beats", "Default")
     rest_two = construct_robject("3 Beats", "Custom")
     rhythm_one = construct_robject("Croissant", "[0.5, 0.5, 0.5, 0.5]", True)
 
     print(rest_one.to_dict())
+    print(rest_one.note_data, rest_one.duration)
     print(rest_two.to_dict())
+    print(rest_two.note_data, rest_two.duration)
     print(rhythm_one.to_dict())
+    print(rhythm_one.note_data, rhythm_one.duration)
 
     rhythm_one.set_mirror(True)
 
