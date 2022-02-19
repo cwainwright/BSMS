@@ -47,7 +47,7 @@ class Timeline:
         if "timeline.json" not in self.project.zip.namelist():
             beat_offset = project.info.get("_beatOffset", 0)
             save_rest(beat_offset)
-            timeline_template.get("sections")[0].get("contents").append(Rest(f"{beat_offset} beats").to_dict())
+            timeline_template.get("sections")[0].get("contents").append(Rest(f"{beat_offset} beats", "Custom").to_dict())
             with self.project.zip.open("timeline.json", "w") as timeline_file:
                 timeline_file.write(dumps(timeline_template, indent=2).encode("utf-8"))
         self.load()
