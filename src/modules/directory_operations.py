@@ -27,9 +27,9 @@ def cleanup(project_directory):
             cleanup(file)
     rmdir(project_directory)
 
-def bsms_directory(sub_directory = None):
-    """return user documents directory"""
-    if sub_directory is None:
+def bsms_directory(*sub_directories: str):
+    """return bsms home directory"""
+    if sub_directories == []:
         logger.info(
             msg="no sub_directory was provided, "
             + "defaulting to BSMS home directory"
@@ -40,31 +40,26 @@ def bsms_directory(sub_directory = None):
             "BSMS"
         )
     else:
+        logger.info(f"sub_directories: {sub_directories} entered")
         file_path = path.join(
             path.expanduser('~'),
             "Documents",
             "BSMS",
-            sub_directory
+            *[str(sub_directory) for sub_directory in sub_directories]
         )
         if path.exists(file_path):
             logger.info(
-                msg= f"sub_directory {sub_directory} found, "
-                + "returning full path"
+                msg= f"sub_directory {sub_directories} found"
             )
         else:
             logger.warning(
-                msg= f"sub_directory {sub_directory} not found, "
-                + "defaulting to BSMS home directory"
+                msg= f"sub_directory {sub_directories} not found"
             )
-            file_path = path.join(
-                path.expanduser('~'),
-                "Documents",
-                "BSMS"
-            )
+    logger.info("returning file path")
     return file_path
 
-def directory_verification(directory):
-    """check for directory"""
+def directory_verification(directory: str):
+    """check for directory, create new directory if not found"""
     logger.info(
         msg= f"checking for directory {directory}"
     )

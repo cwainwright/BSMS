@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>694</width>
+    <width>928</width>
     <height>566</height>
    </rect>
   </property>
@@ -24,7 +24,7 @@
     <item row="0" column="0" rowspan="10">
      <widget class="QTabWidget" name="presetsTabs">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="rhythmsTab">
        <attribute name="icon">
@@ -54,7 +54,7 @@
           </property>
           <column>
            <property name="text">
-            <string>Category/ID</string>
+            <string>Name</string>
            </property>
           </column>
           <column>
@@ -186,28 +186,6 @@
         <string>Timeline</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="0">
-         <widget class="QPushButton" name="add">
-          <property name="text">
-           <string>Add</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/general/add</normaloff>:/general/add</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="up">
-          <property name="text">
-           <string>Up</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/arrows/arrow_up</normaloff>:/arrows/arrow_up</iconset>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
          <widget class="QPushButton" name="remove">
           <property name="text">
@@ -230,6 +208,28 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="up">
+          <property name="text">
+           <string>Up</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/arrows/arrow_up</normaloff>:/arrows/arrow_up</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="add">
+          <property name="text">
+           <string>Add</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/general/add</normaloff>:/general/add</iconset>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0" colspan="4">
          <widget class="QTreeWidget" name="timelineList">
           <property name="frameShadow">
@@ -245,7 +245,7 @@
           </column>
           <column>
            <property name="text">
-            <string>ID</string>
+            <string>Name</string>
            </property>
           </column>
           <column>
@@ -747,8 +747,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>694</width>
-     <height>21</height>
+     <width>928</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

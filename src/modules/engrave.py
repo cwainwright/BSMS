@@ -1,18 +1,11 @@
 """Engrave toolset"""
-import logging
 from json import dump
 from os import listdir, mkdir, path
 
-from bsms_core import projects_directory
-from dialog_window_logic import DialogWindow, InputWindow
-from directory_operations import logger
-
-def engraved_beat_maps_directory(project_name):
-    """return engraved_beat_maps_directory"""
-    return path.join(
-        projects_directory(project_name),
-        "engravedBeatMaps"
-    )
+try:
+    from src.modules.directory_operations import bsms_directory, logger
+except ModuleNotFoundError:
+    from directory_operations import bsms_directory, logger
 
 def beatmap(
     project_name,
@@ -33,14 +26,14 @@ def beatmap(
     # Checks
     # If engraved beatmap directory is not found, create one
     if not path.exists(
-        engraved_beat_maps_directory(project_name)
+        bsms_directory("Finalised", project_name)
     ):
         logger.info(msg="engravedBeatMaps directory missing")
-        mkdir(path.join(engraved_beat_maps_directory(project_name)))
+        mkdir(bsms_directory("Finalised", project_name))
         logger.info(msg="new engravedBeatMaps directory created")
     # If beat_map already exists ask user whether they want to overwrite
     if map_type+map_difficulty+".dat" in listdir(
-        engraved_beat_maps_directory(project_name)
+        bsms_directory("Finalised", project_name)
     ):
         logger.info(msg="duplicate beatmap detected")
         overwrite_confirmation_window = DialogWindow(
@@ -119,10 +112,10 @@ def beatmap(
 
     # Engrave
     logger.info(msg=f"dumping beatmap data to {map_type + map_difficulty}.dat...")
-    with open(path.join(
-        engraved_beat_maps_directory(project_name),
-        map_type+map_difficulty+".dat"
-    ), "w") as beat_map_file:
+    with open(
+        bsms_directory(
+            "Finalised", project_name, map_type+map_difficulty+".dat"
+        ), "w") as beat_map_file:
         dump({
             "_version": version,
             "_notes": notes,
@@ -136,14 +129,14 @@ def info(project_name, lib_cache):
     # Checks
     # If engraved beatmap directory is not found, create one
     if not path.exists(
-        engraved_beat_maps_directory(project_name)
+        bsms_directory("Finalised", project_name)
     ):
         logger.warning(msg="engravedBeatMaps directory missing")
-        mkdir(engraved_beat_maps_directory(project_name))
+        mkdir(bsms_directory("Finalised", project_name))
         logger.info(msg="new engravedBeatMaps directory created")
     # If Info already exists ask user whether they want to overwrite
     if "Info.dat" in listdir(
-        engraved_beat_maps_directory(project_name)
+        bsms_directory("Finalised", project_name)
     ):
         logger.info(msg="Info.dat detected")
         overwrite_confirmation_window = DialogWindow(
@@ -176,7 +169,7 @@ def info(project_name, lib_cache):
     standard = []
     logger.info("info()", "")
     for beat_map in listdir(
-        engraved_beat_maps_directory(project_name)
+        bsms_directory("Finalised", project_name)
     ):
         if beat_map != "Info.dat":
             if beat_map in [
@@ -230,10 +223,9 @@ def info(project_name, lib_cache):
             })
     # Engrave
     logger.info(msg="dumping Info data to Info.dat")
-    with open(path.join(
-        engraved_beat_maps_directory(project_name),
-        "Info.dat"
-    ), "w") as info_file:
+    with open(
+        bsms_directory("Finalised", project_name, "Info.dat"), "w"
+    ) as info_file:
         dump(
             {
                 "_version": version,
