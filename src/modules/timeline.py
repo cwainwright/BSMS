@@ -1,6 +1,5 @@
-from json import dumps, load
-
-from rhythms import Rest, construct_robject
+from types import Union
+from json import dumps, loads
 
 try:
     from src.modules.directory_operations import logger
@@ -29,12 +28,12 @@ class Section():
         """Return Section as Dictionary"""
         return {"name": self.section_type, "contents": [robject.to_dict() for robject in self.contents]}
 
-    def add_robject(self, robject) -> bool:
+    def add_robject(self, robject: Union[Rhythm, Rest]) -> bool:
         """Add RObject to Section"""
         self.contents.append(robject)
         return True
 
-    def remove_robject(self, index) -> bool:
+    def remove_robject(self, index: int) -> bool:
         """Remove RObject from Section"""
         self.contents.pop(index)
         return True
@@ -44,63 +43,31 @@ class Timeline:
     def __init__(self, project):
         self.project = project
         self.sections = []
-        if "timeline.json" not in self.project.zip.namelist():
-            beat_offset = project.info.get("_beatOffset", 0)
-            save_rest(beat_offset)
-            timeline_template.get("sections")[0].get("contents").append(Rest(f"{beat_offset} beats", "Custom").to_dict())
-            with self.project.zip.open("timeline.json", "w") as timeline_file:
-                timeline_file.write(dumps(timeline_template, indent=2).encode("utf-8"))
         self.load()
 
-    def load(self) -> bool:
-        with self.project.zip.open("timeline.json", "r") as timeline_file:
-            print(timeline_file)
-            timeline_dict = load(timeline_file)
-            print(timeline_dict)
-            for section in timeline_dict.get("sections"):
-                section_object = Section(section.get("name"))
-                for r in section.get("contents", []):
-                    robject = construct_robject(r.get("robject_id"), r.get("robject_category"), r.get("mirror", None))
-                    section_object.add_robject(robject)
-                self.add_section(section_object)
-        return True
+    def load(self):
+        """Load Timeline from Project"""
+        with self.project.zipfile.open("timeline.json", "r") as timeline_file:
+            for section in loads(timeline_file.read()).get("sections", []):
+                sobject = Section(section.get("name", "default"))
+                for robject in section.get("contents", []):
+                    sobject.add_robject(robject)
+                self.add_section(sobject)
 
-    def save(self) -> bool:
-        with self.project.zip.open("timeline.json", "w") as timeline_file:
-            timeline = timeline_template.update({"sections": [section.to_dict() for section in self.sections]})
-            timeline_file.write(dumps(timeline, indent=2).encode("utf-8"))
-        return True
+    def save(self):
+        """Save Timeline to Project"""
+        with self.project.zipfile.open("timeline.json", "w") as timeline_file:
+            timeline_file.write(dumps(self.to_dict(), indent=2).encode("utf-8"))
 
-    def __getitem__(self, index: int) -> Section:
-        return self.sections[index]
-
-    def get_section(self, index: int) -> Section:
-        return self.sections[index]
-
-    def add_section(self, section: Section) -> bool:
+    def add_section(self, section: Section):
+        """Add Section to Timeline"""
         self.sections.append(section)
-        return True
+
+    def remove_section(self, index: int):
+        """Remove Section from Timeline"""
+        self.sections.pop(index)
     
-    def remove_section(self, section: Section) -> bool:
-        try:
-            self.sections.remove(section)
-        except ValueError:
-            return False
-        return True
-
-    def pop_section(self, section_index: int) -> bool:
-        try:
-            self.sections.pop(section_index)
-        except IndexError:
-            return False
-        return True
-
-
-timeline_template = load(open("src/templates.json", "r")).get("timeline")
-
-if __name__ == "__main__":
-    from project import Project
-    timeline = Timeline(Project("test"))
-    # timeline.add_section(Section("Test_Section"))
-    # timeline.save()
-    timeline[1].to_dict()
+    def to_dict(self) -> dict:
+        """Return Timeline as Dictionary"""
+        # TODO: Setup to_dict for Timeline
+        return {}

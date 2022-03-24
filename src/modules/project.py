@@ -1,24 +1,29 @@
-from zipfile import ZipFile
+from zipfile import ZipFile, BadZipfile
 from os import path
+from zipfile import ZipFile
 
 try:
-    from src.modules.timeline import Timeline, timeline_template
-    from src.modules.info import Info, info_template
+    from src.modules.timeline import Timeline
+    from src.modules.info import Info
     from src.modules.directory_operations import bsms_directory, logger
 except ModuleNotFoundError:
-    from timeline import Timeline, timeline_template
-    from info import Info, info_template
+    from timeline import Timeline
+    from info import Info
     from directory_operations import bsms_directory, logger
 
 class Project:
     def __init__(self, name: str):
         self.filepath = bsms_directory("Projects", name + ".zip")
-        self.zip = ZipFile(self.filepath, "a")
-        self.info = Info(self)
-        self.timeline = Timeline(self)
-
-        self.image_filepath = path.join(self.filepath, self.info["_coverImageFilename"])
-        self.song_filepath = path.join(self.filepath, self.info["_songFilename"])
+        if self.zipfile.testzip() is None:
+            self.info = Info(self)
+            # self.timeline = Timeline(self)
+        else:
+            logger.error("Project: Zipfile is corrupt")
+            raise BadZipfile
+    
+    @property
+    def zipfile(self) -> ZipFile:
+        return ZipFile(self.filepath)
 
 
 if __name__ == "__main__":
