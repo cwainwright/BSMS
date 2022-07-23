@@ -14,10 +14,7 @@ from librosa import load as libload
 from numpy import append, shape, zeros
 from soundfile import read, write
 
-try:
-    from src.modules.directory_operations import bsms_directory, logger
-except ModuleNotFoundError:
-    from directory_operations import bsms_directory, logger
+from directory_operations import bsms_directory, logger
 
 
 #   #   #   #   Import Song #   #   #   #

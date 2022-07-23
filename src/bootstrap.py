@@ -1,8 +1,6 @@
 """ Handles initial startup processes checking the file system integrity"""
-try:
-    from src.modules.directory_operations import bsms_directory, directory_verification, logger
-except ModuleNotFoundError:
-    from directory_operations import bsms_directory, directory_verification, logger
+
+from directory_operations import bsms_directory, directory_verification, logger
 
 def setup():
     """Initial setup function"""

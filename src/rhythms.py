@@ -4,10 +4,7 @@ from typing import Union
 from json import dump, load
 from os import path
 
-try:
-    from src.modules.directory_operations import bsms_directory, logger
-except ModuleNotFoundError:
-    from directory_operations import bsms_directory, logger
+from directory_operations import bsms_directory, logger
 
 """
 Rhythm JSON format

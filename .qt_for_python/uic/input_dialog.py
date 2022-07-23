@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/Users/christopherwainwright/Documents/Git Repositories/BSMS/ui/input_dialog.ui'
+# Form implementation generated from reading ui file '/Users/christopherwainwright/Git Repositories/BSMS/src/ui/input_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.2.2
 #
