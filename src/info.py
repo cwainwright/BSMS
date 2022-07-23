@@ -5,7 +5,7 @@ class Info:
     def __init__(self, project):
         self.__project = project
         if "info.json" not in self.__project.read.namelist():
-            self.__project.append.write("info.json", arcname=self.__project.name, mode="w", data = dumps(info_template, indent=2).encode("utf-8"))
+            self.__project.append.write("info.json", dumps(info_template, indent=2).encode("utf-8"))
     
     def __repr__(self) -> str:
         return f"Infofile: {self['_songFilename']}"
@@ -29,7 +29,7 @@ class Info:
     def update(self, info: dict):
         with self.__project.read.open("info.json", "r") as info_file:
             info = loads(info_file.read()).update(info)
-        self.__project.append.write("info.json", arcname = self.__project.name, data = dumps(info).encode("utf-8"))
+        self.__project.append.write("info.json", dumps(info, indent=2).encode("utf-8"))  #"info.json", arcname = self.__project.name, data = 
 
     def get(self, keyname, value=None):
         try:

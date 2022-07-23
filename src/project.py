@@ -8,10 +8,7 @@ from directory_operations import bsms_directory, logger
 class Project:
     def __init__(self, name: str):
         self.name = name
-        if not path.exists(self.filepath):
-            self.info = Info(self)
-            self.timeline = Timeline(self)
-        elif self.read.testzip() is None:
+        if self.read.testzip() is None:
             self.info = Info(self)
             self.timeline = Timeline(self)
         else:
