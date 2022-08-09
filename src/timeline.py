@@ -1,9 +1,9 @@
 from typing import Union
-from json import dumps, loads, load
+import json
+from rhythms import Rhythm, Rest
 
-from directory_operations import logger
-from rhythms import Rhythm, Rest, save_rest
-
+with open("src/JSON/templates.json", "r") as file:
+    TIMELINETEMPLATE = json.load(file).get("timeline")
 
 class Section():
     """Section Object, contains Rhythms and Rests"""
@@ -43,22 +43,16 @@ class Timeline:
 
     def load(self):
         """Load Timeline from Project"""
-        if "timeline.json" in self.__project.read.namelist():
-            with self.__project.read.open("timeline.json", "r") as timeline_file:
-                for section in loads(timeline_file.read()).get("sections", []):
-                    sobject = Section(section.get("name", "default"))
-                    for robject in section.get("contents", []):
-                        sobject.add_robject(robject)
-                    self.add_section(sobject)
-        else:
-            logger.warning("No timeline.json found in project")
-            with self.__project.append.open("timeline.json", "w") as timeline_file:
-                timeline_file.write(dumps(timeline_template()).encode("utf-8"), self.__project.name)
-
+        timeline_file = self.__project.read_json("timeline.json")
+        for section in timeline_file.get("sections", []):
+            sobject = Section(section.get("name", "default"))
+            for robject in section.get("contents", []):
+                sobject.add_robject(robject)
+            self.add_section(sobject)
+   
     def save(self):
         """Save Timeline to Project"""
-        with self.__project.append.open("timeline.json", "w") as timeline_file:
-            timeline_file.write(dumps(self.to_dict(), indent=2).encode("utf-8"), self.__project.name)
+        self.__project.write_json("timeline.json", self.to_dict(), indent=2)
 
     def add_section(self, section: Section):
         """Add Section to Timeline"""
@@ -81,15 +75,7 @@ class Timeline:
                 elif isinstance(robject, Rest):
                     dict_timeline["rhythms"].append(robject.to_dict())
         return dict_timeline
-
-def timeline_template() -> dict:
-    """Return Timeline Template"""
-    filepath = "src/modules/templates.json"
-    with open(filepath, "r") as template_file:
-        return (load(template_file).get("timeline"))
-
+    
 if __name__ == "__main__":
-    from project import Project
-    project = Project("test")
-    project.timeline.add_section(Section("test"))
-    project.timeline.save()
+    from project import main
+    main()

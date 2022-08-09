@@ -4,7 +4,7 @@ from typing import Union
 from json import dump, load
 from os import path
 
-from directory_operations import bsms_directory, logger
+from directories import bsms_directory
 
 """
 Rhythm JSON format
@@ -72,9 +72,9 @@ class Rhythm(RObject):
             with open(bsms_directory("Rhythms", self.robject_category, f"{self.robject_id}.json"), "r") as rhythm_file:
                 rhythm_data = dict(load(rhythm_file))
         except FileNotFoundError:
-            logger.critical(f"Rhythm file {self.robject_id} {self.robject_category} not found")
+            print(f"Rhythm file {self.robject_id} {self.robject_category} not found")
             return False
-        logger.info(f"Rhythm file {self.robject_id} {self.robject_category} loaded")
+        print(f"Rhythm file {self.robject_id} {self.robject_category} loaded")
         self.note_data = rhythm_data.get("note_data")
         self.duration = rhythm_data.get("duration")
         return True
@@ -117,12 +117,12 @@ class Rest(RObject):
                     with open(bsms_directory("Rests", "Default", f"{self.robject_id}.json"), "r") as rest_file:
                         rest_data = dict(load(rest_file))
                 else:
-                    logger.warning(f"Rest Category {self.robject_category} not recognised")
+                    print(f"Rest Category {self.robject_category} not recognised")
                     return False
             except FileNotFoundError:
-                logger.warning(f"Rest file {self.robject_id} {self.robject_category} not found")
+                print(f"Rest file {self.robject_id} {self.robject_category} not found")
                 return False
-        logger.info(f"Rhythm file {self.robject_id} {self.robject_category} loaded")
+        print(f"Rhythm file {self.robject_id} {self.robject_category} loaded")
         self.note_data = rest_data.get("note_data")
         self.duration = rest_data.get("duration")
         return True
@@ -145,7 +145,7 @@ def save_rest(duration: float):
     }
     with open(bsms_directory("Rests", "Custom", f"{duration} beats.json"), "w") as rest_file:
         dump(rest_data, rest_file)
-    logger.info(
+    print(
         msg="Rest saved to Custom directory"
     )
     return True
@@ -160,7 +160,7 @@ def save_rhythm(rhythm_id, note_data, duration):
     rhythm_category = str(rhythm_intervals(note_data, duration))
     with open(bsms_directory("Rhythms", rhythm_category, rhythm_id), "w") as rhythm_file:
         dump(rhythm_data, rhythm_file)
-    logger.info(
+    print(
         msg=f"Rhythm saved to {rhythm_category} directory"
     )
     return True
@@ -190,7 +190,7 @@ def rhythm_intervals(note_data: list, duration: float) -> list:
                     interval
                 )
         copied_data.pop()
-        logger.info(
+        print(
             msg="returning intervals..."
         )
     else:

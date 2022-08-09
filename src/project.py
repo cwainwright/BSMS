@@ -1,41 +1,57 @@
-from zipfile import ZipFile, BadZipfile
-from os import path
+from __future__ import annotations
+import json
 
-from timeline import Timeline
-from info import Info
-from directory_operations import bsms_directory, logger
+from pathlib import Path
+from typing import Any, List
+
+import soundfile
+from numpy import array
+
+from directories import bsms_directory
+from metadata import METADATATEMPLATE, Metadata
+from timeline import TIMELINETEMPLATE, Timeline
+
 
 class Project:
     def __init__(self, name: str):
         self.name = name
-        if self.read.testzip() is None:
-            self.info = Info(self)
-            self.timeline = Timeline(self)
-        else:
-            logger.error("Project: Zipfile is corrupt")
-            raise BadZipfile
+        self.filepath = Path(bsms_directory("Projects", f"{name}"))
+        if not self.filepath.exists():
+            self.filepath.mkdir()
+            
+        # Create base project files
+        for file in [["timeline.json", TIMELINETEMPLATE], ["metadata.json", METADATATEMPLATE]]:
+            if not (self.filepath/file[0]).exists():
+                self.write_json(file[0], file[1])
+            
+        self.metadata = Metadata(self)
+        self.timeline = Timeline(self)
+    
+    def namelist(self) -> List[str]:
+        return self.filepath.iterdir()
 
-    @property
-    def filepath(self):
-        return bsms_directory("Projects", self.name + ".zip")
+    def write_json(self, filename: str, data: Any, indent: int=None) -> bool:
+        with open(self.filepath/filename, "w") as file:
+            json.dump(data, file, indent=indent)
+        return True
 
-    @property
-    def write(self) -> ZipFile:
-        return ZipFile(self.filepath, "w")
+    def read_json(self, filename: str) -> Any:
+        with open(self.filepath/filename, "r") as file:
+            return json.load(file)
+        
+    def write_audio(self, filename: str, data: array, samplerate: int) -> bool:
+        filename = self.metadata.get("_songFilename", "song.wav") if filename is None else filename
+        soundfile.write(self.filepath/filename, data, samplerate)
+        return True
+    
+    def read_audio(self, filename: str=None) -> object:
+        filename = self.metadata.get("_songFilename", "song.wav") if filename is None else filename
+        return soundfile.read(self.filepath/filename)
 
-    @property
-    def append(self) -> ZipFile:
-        return ZipFile(self.filepath, "a")
-
-    @property
-    def read(self) -> ZipFile:
-        try:
-            return ZipFile(self.filepath, "r")
-        except FileNotFoundError:
-            ZipFile(self.filepath, "w")
-            return ZipFile(self.filepath, "r")
-
-
-if __name__ == "__main__":
+def main():
     project = Project("test")
-    project.info.update({"_songFilename": "hello_world"})
+    project.metadata.update({"_songName": "hello_world"})
+    project.metadata.save()
+    
+if __name__ == "__main__":
+    main()

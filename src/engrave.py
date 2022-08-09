@@ -2,7 +2,7 @@
 from json import dump
 from os import listdir, mkdir, path
 
-from directory_operations import bsms_directory, logger
+from directories import bsms_directory
 
 def beatmap(
     project_name,
@@ -25,14 +25,14 @@ def beatmap(
     if not path.exists(
         bsms_directory("Finalised", project_name)
     ):
-        logger.info(msg="engravedBeatMaps directory missing")
+        print("engravedBeatMaps directory missing")
         mkdir(bsms_directory("Finalised", project_name))
-        logger.info(msg="new engravedBeatMaps directory created")
+        print("new engravedBeatMaps directory created")
     # If beat_map already exists ask user whether they want to overwrite
     if map_type+map_difficulty+".dat" in listdir(
         bsms_directory("Finalised", project_name)
     ):
-        logger.info(msg="duplicate beatmap detected")
+        print("duplicate beatmap detected")
         overwrite_confirmation_window = DialogWindow(
             "A beatmap of the same difficulty (%s) \n" % map_difficulty
             + "and type (%s) " % map_type
@@ -45,7 +45,7 @@ def beatmap(
     # Initialise note list to append to
     notes = []
     note_errors = []
-    logger.info(msg="checking note values are valid...")
+    print("checking note values are valid...")
     for note in beat_map_notes:
         # Checks for false in RangeChecks
         note_range_check = [
@@ -58,15 +58,15 @@ def beatmap(
             notes.append(note)
         else:
             note_errors.append({note: note_range_check})
-    logger.info(msg=f"{len(note_errors)}  errors encountered")
+    print(f"{len(note_errors)}  errors encountered")
     if len(note_errors) > 0:
-        logger.info(msg=f"note errors encountered: {note_errors}")
+        print(f"note errors encountered: {note_errors}")
 
     # Obstacles
     # Initialise obstacle list to append to
     obstacles = []
     obstacle_errors = []
-    logger.info(msg="checking obstacle values are valid...")
+    print("checking obstacle values are valid...")
     for obstacle in beat_map_obstacles:
         # Checks for false in RangeChecks
         obstacle_range_check = [
@@ -79,15 +79,15 @@ def beatmap(
             obstacles.append(obstacle)
         else:
             obstacle_errors.append({obstacle: obstacle_range_check})
-    logger.info(msg=f"{len(obstacle_errors)} errors encountered")
+    print(f"{len(obstacle_errors)} errors encountered")
     if len(obstacle_errors) > 0:
-        logger.info(msg=f"obstacle errors encountered: {obstacle_errors}")
+        print(f"obstacle errors encountered: {obstacle_errors}")
 
     # Events
     # Initialise event list to append to
     events = []
     event_errors = []
-    logger.info(msg="checking event values are valid...")
+    print("checking event values are valid...")
     # Checks event will be valid before formatting
     for event in beat_map_events:
         event_range_check = [
@@ -103,12 +103,12 @@ def beatmap(
             events.append(event)
         else:
             event_errors.append({event: event_range_check})
-    logger.info(msg=f"{len(event_errors)} errors encountered")
+    print(f"{len(event_errors)} errors encountered")
     if len(event_errors) > 0:
-        logger.info(msg=f"event errors encountered: {event_errors}")
+        print(f"event errors encountered: {event_errors}")
 
     # Engrave
-    logger.info(msg=f"dumping beatmap data to {map_type + map_difficulty}.dat...")
+    print(f"dumping beatmap data to {map_type + map_difficulty}.dat...")
     with open(
         bsms_directory(
             "Finalised", project_name, map_type+map_difficulty+".dat"
@@ -119,7 +119,7 @@ def beatmap(
             "_obstacles": obstacles,
             "_events": events
         }, beat_map_file, indent=4)
-    logger.info(msg="dumped beatmap data to .dat...")
+    print("dumped beatmap data to .dat...")
 
 def info(project_name, lib_cache):
     """Engrave info.dat file"""
@@ -128,14 +128,14 @@ def info(project_name, lib_cache):
     if not path.exists(
         bsms_directory("Finalised", project_name)
     ):
-        logger.warning(msg="engravedBeatMaps directory missing")
+        print("engravedBeatMaps directory missing")
         mkdir(bsms_directory("Finalised", project_name))
-        logger.info(msg="new engravedBeatMaps directory created")
+        print("new engravedBeatMaps directory created")
     # If Info already exists ask user whether they want to overwrite
     if "Info.dat" in listdir(
         bsms_directory("Finalised", project_name)
     ):
-        logger.info(msg="Info.dat detected")
+        print("Info.dat detected")
         overwrite_confirmation_window = DialogWindow(
             "An Info.dat file was discovered; overwrite?"
         )
@@ -164,7 +164,7 @@ def info(project_name, lib_cache):
 
     # BeatMapSet
     standard = []
-    logger.info("info()", "")
+    print("info()", "")
     for beat_map in listdir(
         bsms_directory("Finalised", project_name)
     ):
@@ -185,7 +185,7 @@ def info(project_name, lib_cache):
                     "ExpertPlus": 9
                 }[difficulty]
             else:
-                logger.warning(
+                print(
                     msg=f"Difficulty of beatmap {beat_map}"
                     + "could not be identified")
                 custom_difficulty_confirmation = DialogWindow(
@@ -219,7 +219,6 @@ def info(project_name, lib_cache):
                 "_noteJumpStartBeatOffset": 0.0
             })
     # Engrave
-    logger.info(msg="dumping Info data to Info.dat")
     with open(
         bsms_directory("Finalised", project_name, "Info.dat"), "w"
     ) as info_file:
@@ -246,4 +245,5 @@ def info(project_name, lib_cache):
                 }]
             },
             info_file,
-            indent=4)
+            indent=4
+        )

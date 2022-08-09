@@ -14,7 +14,7 @@ from librosa import load as libload
 from numpy import append, shape, zeros
 from soundfile import read, write
 
-from directory_operations import bsms_directory, logger
+from directories import bsms_directory
 
 
 #   #   #   #   Import Song #   #   #   #
@@ -29,33 +29,33 @@ def import_song(project_name: str = None, file_path: str = None):
         file_path = input("Filepath to song file to import: ").strip("\"")
 
     # Load original_song_file
-    logger.info(msg="loading original songfile...")
+    print("loading original songfile...")
     original_song_file, sample_rate = read(file_path)
     librosa_y, librosa_sr = libload(file_path)
-    logger.info(msg="songfile loaded")
+    print("songfile loaded")
 
     # Gathers basic data required for inital analysis
-    logger.info(msg="analysing original songfile...")
+    print("analysing original songfile...")
     channel_count = shape(original_song_file)[1]
     tempo, beat_frames = beat.beat_track(y=librosa_y, sr=librosa_sr)
     beat_times = frames_to_time(beat_frames, sr=librosa_sr)
     # Finds closest beat after beatTime[0] to sync beatTime[0] to
     time_per_beat = (60/tempo)
-    logger.info(msg="analysis complete")
+    print("analysis complete")
 
     # Synchronisation beats (to sync song to tempo pulse)
-    logger.info(msg="synchronising songfile...")
+    print("synchronising songfile...")
     sync_beats = 1
     while time_per_beat*sync_beats < beat_times[0]:
         sync_beats += 1
     # Calculates additionalTime/Frames needed to sync song to beat
     sync_time = -(beat_times[0] - time_per_beat*sync_beats)
     sync_frame_count = ceil(sync_time*sample_rate)
-    logger.info(msg="synchronisation complete")
+    print("synchronisation complete")
 
     # Offset beats (to prevent hotstart)
     # Attempts to maintain the syncronisation to a 4/4 time signature
-    logger.info(msg="offsetting songfile...")
+    print("offsetting songfile...")
     additional_beats = 4-(sync_beats % 4)
     # While hotstart may occour
     # (firstBeatTime + additional sync_time is still less than 2 seconds)
@@ -65,10 +65,10 @@ def import_song(project_name: str = None, file_path: str = None):
     additional_frame_count = ceil(
         additional_beats*time_per_beat*sample_rate
     )
-    logger.info(msg="offset complete")
+    print("offset complete")
 
     # Generates additional zero-value frames to add to beginning of song file
-    logger.info(msg="generating additional frames...")
+    print("generating additional frames...")
     frames_offset = zeros(
         [
             additional_frame_count+sync_frame_count,
@@ -76,22 +76,22 @@ def import_song(project_name: str = None, file_path: str = None):
         ]
     )
     new_song_file = append(frames_offset, original_song_file, axis=0)
-    logger.info(msg="additional frames generated")
+    print("additional frames generated")
 
     # Make project directory if it doesn't already exist
-    logger.info(msg="checking for project directory...")
+    print("checking for project directory...")
     if project_name not in listdir(bsms_directory("Projects")):
         mkdir(bsms_directory("Projects", project_name))
-        logger.info(msg="new project directory created")
+        print("new project directory created")
 
     # Writes final song file with beat_offset to new "song.wav"
-    logger.info(msg="writing updated songfile...")
+    print("writing updated songfile...")
     write(
         bsms_directory(project_name, "song.wav"),
         data=new_song_file,
         samplerate=sample_rate
     )
-    logger.info(msg="songfile written")
+    print("songfile written")
     return additional_beats+sync_beats
 
 #   #   #   #   Libcache    #   #   #   #
@@ -105,32 +105,32 @@ class LibCache:
         self.songfile_directory = path.join(project_directory, "song.wav")
         self.beat_offset = beat_offset
         # Check for existence of lib_cache.json in project directory
-        logger.info(
-            msg="checking for lib_cache.json..."
+        print(
+            "checking for lib_cache.json..."
         )
         if not path.exists(self.lib_cache_directory):
             self.new_cache(self.analyse())
         elif "analysed" not in self.load_cache():
             self.update_cache(self.analyse())
-        logger.info(
-            msg="LibCache initialised"
+        print(
+            "LibCache initialised"
         )
 
     def analyse(self):
         """Analyse song"""
-        logger.info(
-            msg="loading songfile..."
+        print(
+            "loading songfile..."
         )
         librosa_y, librosa_sr = libload(self.songfile_directory)
         # Librosa extracts useful data from the song
-        logger.info(
-            msg="analysing songfile..."
+        print(
+            "analysing songfile..."
         )
         sample_rate = get_samplerate(self.songfile_directory)
         tempo = beat.beat_track(y=librosa_y, sr=librosa_sr)[0]
         duration = get_duration(y=librosa_y, sr=librosa_sr)
-        logger.info(
-            msg="songfile analysed"
+        print(
+            "songfile analysed"
         )
         return {
             "project_name":self.project_name,
@@ -145,8 +145,8 @@ class LibCache:
     def load_cache(self):
         """"load cache contents"""
         with open(self.lib_cache_directory, "r") as lib_cache_file:
-            logger.info(
-                msg="lib_cache.json loaded"
+            print(
+                "lib_cache.json loaded"
             )
             return load(lib_cache_file)
 
@@ -158,8 +158,8 @@ class LibCache:
             lib_cache_data.update({value_name: value})
         with open(self.lib_cache_directory, "w") as lib_cache_file:
             dump(lib_cache_data, lib_cache_file, indent=4)
-        logger.info(
-            msg="lib_cache.json updated"
+        print(
+            "lib_cache.json updated"
         )
 
     def new_cache(self, data):
@@ -169,8 +169,8 @@ class LibCache:
             lib_cache_data.update({value_name: value})
         with open(self.lib_cache_directory, "w") as lib_cache_file:
             dump(lib_cache_data, lib_cache_file, indent=4)
-        logger.info(
-            msg="lib_cache.json created"
+        print(
+            "lib_cache.json created"
         )
 
 def finalise(project_name, image_file_directory):
@@ -179,14 +179,14 @@ def finalise(project_name, image_file_directory):
     project_directory = bsms_directory("Projects", project_name)
     copy_destination = bsms_directory("Finalised Projects", project_name)
     # If project_name directory is not found, create one
-    logger.info(msg="checking for project in copy destination...")
+    print("checking for project in copy destination...")
     if project_name not in listdir(bsms_directory("Finalised Projects")):
         mkdir(copy_destination)
-        logger.info(
-            msg="project folder created in copy destination"
+        print(
+            "project folder created in copy destination"
         )
     # Copy files to directory
-    logger.info(msg="copying project files to copy destination...")
+    print("copying project files to copy destination...")
     copyfile(
         path.join(project_directory, "song.wav"),
         path.join(copy_destination, "song.wav"))
@@ -200,4 +200,4 @@ def finalise(project_name, image_file_directory):
     copyfile(
         image_file_directory,
         path.join(copy_destination, "cover.jpg"))
-    logger.info("finalise()", "project files copied")
+    print("finalise()", "project files copied")
