@@ -1,0 +1,42 @@
+{
+    "metadata": {
+        "_version": "2.0.0",
+        "_songName": "Example Song",
+        "_songSubName": "",
+        "_songAuthorName": "Song Artist",
+        "_levelAuthorName": "Level Author",
+        "_beatsPerMinute": 120,
+        "_shuffle": 0,
+        "_shufflePeriod": 0.5,
+        "_previewStartTime": 31.5,
+        "_previewDuration": 7,
+        "_songFilename": "song.wav",
+        "_coverImageFilename": "cover.jpg",
+        "_environmentName": "BigMirrorEnvironment",
+        "_allDirectionsEnvironmentName" : "GlassDesertEnvironment",
+        "_songTimeOffset": 0,
+        "_customData": {
+
+        },
+        "_difficultyBeatmapSets": [
+
+        ]
+    },
+    "timeline": {
+        "sections": [
+            {
+                "name": "Intro",
+                "contents": []
+            }
+        ],
+        "rhythms": []
+    },
+    "rhythm": {
+        "note_data": [],
+        "duration": 0.0
+    },
+    "rest": {
+        "note_data": [],
+        "duration": 0.0
+    }
+}
