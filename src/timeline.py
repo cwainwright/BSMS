@@ -1,9 +1,10 @@
 from typing import Union
 import json
+from files import get_template
+from pathlib import Path
 from rhythms import Rhythm, Rest
 
-with open("src/JSON/templates.json", "r") as file:
-    TIMELINETEMPLATE = json.load(file).get("timeline")
+TIMELINETEMPLATE = get_template("timeline")
 
 class Section():
     """Section Object, contains Rhythms and Rests"""

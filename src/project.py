@@ -1,13 +1,12 @@
 from __future__ import annotations
 import json
 
-from pathlib import Path
+from preferences import PREFERENCES
 from typing import Any, List
 
 import soundfile
 from numpy import array
 
-from directories import bsms_directory
 from metadata import METADATATEMPLATE, Metadata
 from timeline import TIMELINETEMPLATE, Timeline
 
@@ -15,7 +14,7 @@ from timeline import TIMELINETEMPLATE, Timeline
 class Project:
     def __init__(self, name: str):
         self.name = name
-        self.filepath = Path(bsms_directory("Projects", f"{name}"))
+        self.filepath = PREFERENCES.home_directory/"Projects"/self.name
         if not self.filepath.exists():
             self.filepath.mkdir()
             

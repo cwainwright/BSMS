@@ -1,7 +1,6 @@
-import json
+from files import get_template
 
-with open("src/JSON/templates.json", "r") as file:
-    METADATATEMPLATE = json.load(file).get("metadata")
+METADATATEMPLATE = get_template("metadata")
 
 class Metadata:
     def __init__(self, project):

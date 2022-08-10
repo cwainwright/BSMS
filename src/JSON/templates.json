@@ -31,12 +31,12 @@
         ],
         "rhythms": []
     },
-    "rhythm": {
+    "robject": {
         "note_data": [],
         "duration": 0.0
     },
-    "rest": {
-        "note_data": [],
-        "duration": 0.0
+    "preferences": {
+        "home_directory": "~/Documents/BSMS",
+        "exported_projects_directory": "~/Documents/BSMS/Exported Projects"
     }
 }

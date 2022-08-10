@@ -1,5 +1,4 @@
 import sys
-from tokenize import String
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 
