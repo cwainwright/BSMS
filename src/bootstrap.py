@@ -1,6 +1,7 @@
 """ Handles initial startup processes checking the file system integrity"""
 from pathlib import Path
 from preferences import PREFERENCES
+from robject import restore_robject
 import json
 
 def setup():
@@ -18,12 +19,8 @@ def populate_robjects():
     """Populates the RObjects directory with the default RObjects"""
     with open(Path(__file__).parent/"JSON"/"robjects.json") as f:
         robjects = json.load(f)
-    for rhythm in robjects:
-        category_filepath = PREFERENCES.robject_directory/rhythm["robject_category"]
-        if not (category_filepath.exists()):
-            category_filepath.mkdir()
-        with open(PREFERENCES.robject_directory/rhythm["robject_category"]/(rhythm["robject_id"]+".json"), "w") as file:
-            json.dump(rhythm["robject_data"], file)
+    for robject in robjects:
+        restore_robject(robjects, robject["robject_id"], robject["robject_category"])
         
 def main():
     """Main function"""
@@ -34,4 +31,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-5
