@@ -1,6 +1,5 @@
 """ Handles initial startup processes checking the file system integrity"""
 from pathlib import Path
-from unicodedata import category
 from preferences import PREFERENCES
 import json
 
