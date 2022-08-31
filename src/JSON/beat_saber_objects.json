@@ -1,0 +1,142 @@
+{
+    "info":{
+        "_version": "2.0.0",
+        "_songName": "Example Song",
+        "_songSubName": "",
+        "_songAuthorName": "Song Artist",
+        "_levelAuthorName": "You",
+        "_beatsPerMinute": 120,
+        "_shuffle": 0,
+        "_shufflePeriod": 0.5,
+        "_previewStartTime": 31.5,
+        "_previewDuration": 7,
+        "_songFilename": "song.ogg",
+        "_coverImageFilename": "cover.jpg",
+        "_environmentName": "BigMirrorEnvironment",
+        "_allDirectionsEnvironmentName" : "GlassDesertEnvironment",
+        "_songTimeOffset": 0,
+        "_difficultyBeatmapSets": []
+    },
+    "difficulty_beatmap_set": {
+        "_beatmapCharacteristicName": "Standard",
+        "_difficultyBeatmaps": []
+    },
+    "difficulty_beatmap": {
+        "_difficulty": "ExpertPlus",
+        "_difficultyRank": 9,
+        "_beatmapFilename": "StandardExpertPlus.dat",
+        "_noteJumpMovementSpeed": 18,
+        "_noteJumpStartBeatOffset": 0
+    },
+    "difficulty_file": {
+        "version":"3.0.0",
+        "bpmEvents": [],
+        "rotationEvents": [],
+        "colorNotes": [],
+        "bombNotes": [],
+        "obstacles": [],
+        "sliders": [],
+        "burstSliders": [],
+        "waypoints": [],
+        "basicBeatmapEvents": [],
+        "colorBoostBeatmapEvents": [],
+        "lightColorEventBoxGroups": [],
+        "lightRotationEventBoxGroups": [],
+        "basicEventTypesWithKeywords": {},
+        "useNormalEventsAsCompatibleEvents": false
+    },
+    "bpmEvent": {
+        "b": 10.0,
+        "m": 128.0
+    },
+    "rotationEvent": {
+        "b": 10.0,
+        "e": 0,
+        "r": 15.0
+    },
+    "colorNote": {
+        "b": 10.0,
+        "x": 1,
+        "y": 0,
+        "c": 0,
+        "d": 1,
+        "a": 0
+    },
+    "bombNote": {
+        "b": 10.0,
+        "x": 1,
+        "y": 0
+    },
+    "obstacle": {
+        "b": 10.0,
+        "x": 1,
+        "y": 0,
+        "d": 5,
+        "w": 1,
+        "h": 3
+    },
+    "slider": {
+        "b": 10.0,
+        "c": 0,
+        "x": 1,
+        "y": 0,
+        "d": 1,
+        "mu": 1.0,
+        "tb": 15.0,
+        "tx": 2,
+        "ty": 2,
+        "tc": 1,
+        "tmu": 1.0,
+        "m": 1
+    },
+    "burstSlider": {
+        "b": 10.0,
+        "x": 1,
+        "y": 0,
+        "c": 0,
+        "d": 1,
+        "tb": 15.0,
+        "tx": 2,
+        "ty": 2,
+        "sc": 3,
+        "s": 0.5
+    },
+    "basicBeatmapEvent": {
+        "b": 10.0,
+        "et": 1,
+        "i": 1,
+        "f": 1.0
+    },
+    "colorBoostBeatmapEvent": {
+        "b": 10.0,
+        "o": true
+    },
+    "lightColorEventBox": {
+        "b": 2.0,
+        "g": 0,
+        "e": [
+            {
+            "f": {
+                "f": 1,
+                "p": 1,
+                "t": 0,
+                "r": 0
+            },
+            "w": 1.0,
+            "d": 1,
+            "r": 1.0,
+            "t": 1,
+            "b": 1,
+            "e": [
+                {
+                "b": 0.0,
+                "i": 0,
+                "c": 1,
+                "s": 1.0,
+                "f": 0
+                }
+            ]
+            }
+        ]
+    }
+}

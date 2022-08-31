@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>500</height>
+    <width>376</width>
+    <height>369</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,50 +19,26 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>500</width>
-    <height>500</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>500</width>
-    <height>500</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="quickstartGroupbox">
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>15</pointsize>
-      </font>
-     </property>
      <property name="title">
       <string>Quickstart</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="newProjectButton">
+       <widget class="QToolButton" name="new_project_button">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <strikeout>false</strikeout>
-         </font>
-        </property>
         <property name="text">
-         <string/>
+         <string>New</string>
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
@@ -70,58 +46,67 @@
         </property>
         <property name="iconSize">
          <size>
-          <width>128</width>
-          <height>128</height>
+          <width>64</width>
+          <height>64</height>
          </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="openProjectButton">
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
+       <widget class="QToolButton" name="open_project_button">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
         <property name="text">
-         <string/>
+         <string>Open</string>
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/folder/not_filled</normaloff>
-          <normalon>:/folder/filled</normalon>:/folder/not_filled</iconset>
+          <normaloff>:/folder/not_filled</normaloff>:/folder/not_filled</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>128</width>
-          <height>128</height>
+          <width>64</width>
+          <height>64</height>
          </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="rhythmEditorButton">
+       <widget class="QToolButton" name="rhythm_editor_button">
         <property name="enabled">
          <bool>true</bool>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
         <property name="text">
-         <string/>
+         <string>Rhythm Editor</string>
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/table_edit/not_filled</normaloff>
-          <normalon>:/table_edit/filled</normalon>:/table_edit/not_filled</iconset>
+          <normaloff>:/table_edit/not_filled</normaloff>:/table_edit/not_filled</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>128</width>
-          <height>128</height>
+          <width>64</width>
+          <height>64</height>
          </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
         </property>
        </widget>
       </item>
@@ -130,25 +115,12 @@
    </item>
    <item>
     <widget class="QGroupBox" name="recentsGroupbox">
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>15</pointsize>
-      </font>
-     </property>
      <property name="title">
       <string>Recents</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="QListWidget" name="recentsListWidget">
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-       </widget>
+       <widget class="QListWidget" name="recents_list_widget"/>
       </item>
      </layout>
     </widget>

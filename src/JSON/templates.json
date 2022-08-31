@@ -14,13 +14,7 @@
         "_coverImageFilename": "cover.jpg",
         "_environmentName": "BigMirrorEnvironment",
         "_allDirectionsEnvironmentName" : "GlassDesertEnvironment",
-        "_songTimeOffset": 0,
-        "_customData": {
-
-        },
-        "_difficultyBeatmapSets": [
-
-        ]
+        "_songTimeOffset": 0
     },
     "timeline": {
         "sections": [
@@ -29,7 +23,7 @@
                 "contents": []
             }
         ],
-        "rhythms": []
+        "robject_backup": []
     },
     "robject": {
         "note_data": [],
@@ -37,6 +31,7 @@
     },
     "preferences": {
         "home_directory": "~/Documents/BSMS",
-        "exported_projects_directory": "~/Documents/BSMS/Exported Projects"
+        "exported_projects_directory": "~/Documents/BSMS/Exported Projects",
+        "timeline_delim": "_"
     }
 }

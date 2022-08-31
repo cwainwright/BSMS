@@ -1,0 +1,12 @@
+{
+    "home_directory": "~/Documents/BSMS",
+    "export_directory": "~/Documents/BSMS/Exported Projects",
+    "timeline_name_deliminator": "_",
+    "rhythm_naming_scheme": {
+        "0.25": "semiquaver",
+        "0.5": "quaver",
+        "1": "crotchet",
+        "2": "minim",
+        "4": "semibreve"
+    }
+}

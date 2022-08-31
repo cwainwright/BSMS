@@ -2,8 +2,6 @@
 from json import dump
 from os import listdir, mkdir, path
 
-from directories import bsms_directory
-
 def beatmap(
     project_name,
     version="2.0.0",

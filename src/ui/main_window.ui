@@ -1,182 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>main_window</class>
+ <widget class="QMainWindow" name="main_window">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>928</width>
-    <height>566</height>
+    <width>741</width>
+    <height>729</height>
    </rect>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>566</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0" rowspan="10">
-     <widget class="QTabWidget" name="presetsTabs">
+  <property name="documentMode">
+   <bool>true</bool>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
+  <widget class="QWidget" name="central_widget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QTabWidget" name="timeline_info_tabs">
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="rhythmsTab">
-       <attribute name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/music_notes/not_filled</normaloff>
-         <normalon>:/music_notes/filled</normalon>:/music_notes/not_filled</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>Rhythms</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="1" column="0">
-         <widget class="QPushButton" name="newRhythm">
-          <property name="text">
-           <string>New</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/general/add</normaloff>:/general/add</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="4">
-         <widget class="QTreeWidget" name="rhythmTree">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <column>
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Duration</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="importRhythm">
-          <property name="text">
-           <string>Import</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/arrows/arrow_import</normaloff>:/arrows/arrow_import</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QToolButton" name="refreshRhythms">
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/arrows/arrow_sync</normaloff>:/arrows/arrow_sync</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="editRhythm">
-          <property name="text">
-           <string>Edit</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/general/edit</normaloff>:/general/edit</iconset>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="restsTab">
-       <attribute name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/fit_height/not_filled</normaloff>
-         <normalon>:/fit_height/filled</normalon>:/fit_height/not_filled</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>Rests</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="1" column="0">
-         <widget class="QPushButton" name="customRest">
-          <property name="text">
-           <string>Custom</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/general/add</normaloff>:/general/add</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="deleteRest">
-          <property name="text">
-           <string>Delete</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/general/delete</normaloff>:/general/delete</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="editRest">
-          <property name="text">
-           <string>Edit</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/general/edit</normaloff>:/general/edit</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QToolButton" name="refreshRests">
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/arrows/arrow_sync</normaloff>:/arrows/arrow_sync</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="4">
-         <widget class="QTreeWidget" name="restTree">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <column>
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Duration</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item row="0" column="2" rowspan="10">
-     <widget class="QTabWidget" name="timelineContainer">
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="timelineTab">
+      <widget class="QWidget" name="timeline_tab">
        <attribute name="icon">
         <iconset resource="resources.qrc">
          <normaloff>:/timeline/not_filled</normaloff>
@@ -185,89 +38,303 @@
        <attribute name="title">
         <string>Timeline</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="1">
-         <widget class="QPushButton" name="remove">
-          <property name="text">
-           <string>Remove</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/general/delete</normaloff>:/general/delete</iconset>
-          </property>
-         </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="robject_filter_label">
+              <property name="text">
+               <string>Filter:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="robject_filter_combobox">
+              <item>
+               <property name="text">
+                <string>All</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Rhythms</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Rests</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <spacer name="robject_filter_spacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTreeWidget" name="robject_tree">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <column>
+             <property name="text">
+              <string>Name</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Duration</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="rhythm_button_container">
+            <item>
+             <widget class="QPushButton" name="new_rhythm_button">
+              <property name="text">
+               <string>New</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/general/add</normaloff>:/general/add</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="edit_rhythm_button">
+              <property name="text">
+               <string>Edit</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/general/edit</normaloff>:/general/edit</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="import_rhythm_button">
+              <property name="text">
+               <string>Delete</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/general/delete</normaloff>:/general/delete</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
-        <item row="1" column="3">
-         <widget class="QPushButton" name="down">
-          <property name="text">
-           <string>Down</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/arrows/arrow_down</normaloff>:/arrows/arrow_down</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="up">
-          <property name="text">
-           <string>Up</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/arrows/arrow_up</normaloff>:/arrows/arrow_up</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QPushButton" name="add">
-          <property name="text">
-           <string>Add</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/general/add</normaloff>:/general/add</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="4">
-         <widget class="QTreeWidget" name="timelineList">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::DropOnly</enum>
-          </property>
-          <column>
-           <property name="text">
-            <string>Start Time</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Category</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Type</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Duration</string>
-           </property>
-          </column>
-         </widget>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QHBoxLayout" name="timeline_combobox_container">
+            <item>
+             <widget class="QLabel" name="characteristic_label">
+              <property name="text">
+               <string>Characteristic:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="characteristic_combobox">
+              <item>
+               <property name="text">
+                <string>Standard</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>One Saber</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>180 Degree</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>360 Degree</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>+</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="difficulty_label">
+              <property name="text">
+               <string>Difficulty:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="difficulty_combobox">
+              <item>
+               <property name="text">
+                <string>Easy</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Normal</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Hard</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Expert</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Expert+</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>+</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTreeWidget" name="timeline_tree">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::DropOnly</enum>
+            </property>
+            <column>
+             <property name="text">
+              <string>Start Time</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Name</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Category</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Type</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Duration</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QPushButton" name="add_button">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Add</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/general/add</normaloff>:/general/add</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="down_button">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Down</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/arrows/arrow_down</normaloff>:/arrows/arrow_down</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="up_button">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Up</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/arrows/arrow_up</normaloff>:/arrows/arrow_up</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="remove_button">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Remove</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/general/delete</normaloff>:/general/delete</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="infoTab">
+      <widget class="QWidget" name="info_tab">
        <attribute name="icon">
         <iconset resource="resources.qrc">
          <normaloff>:/bullet_list_square/not_filled</normaloff>
@@ -276,9 +343,9 @@
        <attribute name="title">
         <string>Info</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0" colspan="6">
-         <widget class="QGroupBox" name="mapInformationContainer">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QGroupBox" name="map_information_group_box">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -290,7 +357,7 @@
           </property>
           <layout class="QFormLayout" name="formLayout">
            <item row="0" column="0">
-            <widget class="QLabel" name="projectNameLabel">
+            <widget class="QLabel" name="project_name_label">
              <property name="text">
               <string>Project Name</string>
              </property>
@@ -298,15 +365,15 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>projectNameInput</cstring>
+              <cstring>project_name_input</cstring>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="projectNameInput"/>
+            <widget class="QLineEdit" name="project_name_input"/>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="versionLabel">
+            <widget class="QLabel" name="version_label">
              <property name="text">
               <string>Version</string>
              </property>
@@ -314,19 +381,19 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>versionInput</cstring>
+              <cstring>version_input</cstring>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="versionInput">
+            <widget class="QLineEdit" name="version_input">
              <property name="text">
               <string>2.0.0</string>
              </property>
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="songSubNameLabel">
+            <widget class="QLabel" name="song_sub_name_label">
              <property name="text">
               <string>Song Sub-Name</string>
              </property>
@@ -334,15 +401,15 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>songSubNameInput</cstring>
+              <cstring>song_sub_name_input</cstring>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="songSubNameInput"/>
+            <widget class="QLineEdit" name="song_sub_name_input"/>
            </item>
            <item row="3" column="0">
-            <widget class="QLabel" name="songAuthorNameLabel">
+            <widget class="QLabel" name="song_author_name_label">
              <property name="text">
               <string>Song Author Name</string>
              </property>
@@ -350,15 +417,15 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>songAuthorNameInput</cstring>
+              <cstring>song_author_name_input</cstring>
              </property>
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QLineEdit" name="songAuthorNameInput"/>
+            <widget class="QLineEdit" name="song_author_name_input"/>
            </item>
            <item row="4" column="0">
-            <widget class="QLabel" name="levelAuthorNameLabel">
+            <widget class="QLabel" name="level_author_name_label">
              <property name="text">
               <string>Level Author Name</string>
              </property>
@@ -366,25 +433,18 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>levelAuthorNameInput</cstring>
+              <cstring>level_author_name_input</cstring>
              </property>
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLineEdit" name="levelAuthorNameInput"/>
+            <widget class="QLineEdit" name="level_author_name_input"/>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="QPushButton" name="cancel">
-          <property name="text">
-           <string>Cancel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="6">
-         <widget class="QGroupBox" name="mapMetadataContainer">
+        <item>
+         <widget class="QGroupBox" name="map_metadata_container">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -396,7 +456,7 @@
           </property>
           <layout class="QFormLayout" name="formLayout_2">
            <item row="0" column="0">
-            <widget class="QLabel" name="BPMLabel">
+            <widget class="QLabel" name="BPM_label">
              <property name="text">
               <string>Beats-Per-Minute (Override)</string>
              </property>
@@ -404,12 +464,12 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>BPMSpinbox</cstring>
+              <cstring>BPM_spinbox</cstring>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QDoubleSpinBox" name="BPMSpinbox">
+            <widget class="QDoubleSpinBox" name="BPM_spinbox">
              <property name="decimals">
               <number>1</number>
              </property>
@@ -419,7 +479,7 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="songTimeOffsetLabel">
+            <widget class="QLabel" name="song_time_offset_label">
              <property name="text">
               <string>Song Time Offset</string>
              </property>
@@ -427,12 +487,12 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>songTimeOffsetSpinbox</cstring>
+              <cstring>song_time_offset_spinbox</cstring>
              </property>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QDoubleSpinBox" name="songTimeOffsetSpinbox">
+            <widget class="QDoubleSpinBox" name="song_time_offset_spinbox">
              <property name="decimals">
               <number>0</number>
              </property>
@@ -442,7 +502,7 @@
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="shuffleLabel">
+            <widget class="QLabel" name="shuffle_label">
              <property name="text">
               <string>Shuffle</string>
              </property>
@@ -450,12 +510,12 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>shuffleSpinbox</cstring>
+              <cstring>shuffle_spinbox</cstring>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QDoubleSpinBox" name="shuffleSpinbox">
+            <widget class="QDoubleSpinBox" name="shuffle_spinbox">
              <property name="decimals">
               <number>1</number>
              </property>
@@ -468,7 +528,7 @@
             </widget>
            </item>
            <item row="3" column="0">
-            <widget class="QLabel" name="shuffleOffsetLabel">
+            <widget class="QLabel" name="shuffle_offset_label">
              <property name="text">
               <string>Shuffle Offset</string>
              </property>
@@ -476,12 +536,12 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>shuffleOffsetSpinbox</cstring>
+              <cstring>shuffle_offset_spinbox</cstring>
              </property>
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QDoubleSpinBox" name="shuffleOffsetSpinbox">
+            <widget class="QDoubleSpinBox" name="shuffle_offset_spinbox">
              <property name="decimals">
               <number>1</number>
              </property>
@@ -497,7 +557,7 @@
             </widget>
            </item>
            <item row="4" column="0">
-            <widget class="QLabel" name="previewStartTimeLabel">
+            <widget class="QLabel" name="preview_start_time_label">
              <property name="text">
               <string>Preview Start Time</string>
              </property>
@@ -505,15 +565,15 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>previewStartTimeSpinbox</cstring>
+              <cstring>preview_start_time_spinbox</cstring>
              </property>
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QSpinBox" name="previewStartTimeSpinbox"/>
+            <widget class="QSpinBox" name="preview_start_time_spinbox"/>
            </item>
            <item row="5" column="0">
-            <widget class="QLabel" name="previewDurationLabel">
+            <widget class="QLabel" name="preview_duration_label">
              <property name="text">
               <string>Preview Duration</string>
              </property>
@@ -521,19 +581,19 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>previewDurationSpinbox</cstring>
+              <cstring>preview_duration_spinbox</cstring>
              </property>
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QSpinBox" name="previewDurationSpinbox">
+            <widget class="QSpinBox" name="preview_duration_spinbox">
              <property name="value">
               <number>10</number>
              </property>
             </widget>
            </item>
            <item row="6" column="0">
-            <widget class="QLabel" name="songFilenameLabel">
+            <widget class="QLabel" name="song_filename_label">
              <property name="text">
               <string>Song Filename</string>
              </property>
@@ -541,19 +601,19 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>songFilenameInput</cstring>
+              <cstring>song_filename_input</cstring>
              </property>
             </widget>
            </item>
            <item row="6" column="1">
-            <widget class="QLineEdit" name="songFilenameInput">
+            <widget class="QLineEdit" name="song_filename_input">
              <property name="text">
               <string>song.wav</string>
              </property>
             </widget>
            </item>
            <item row="7" column="0">
-            <widget class="QLabel" name="coverImageFilenameLabel">
+            <widget class="QLabel" name="cover_image_filename_label">
              <property name="text">
               <string>Cover Image Filename</string>
              </property>
@@ -561,19 +621,19 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>coverImageFilenameInput</cstring>
+              <cstring>cover_image_filename_input</cstring>
              </property>
             </widget>
            </item>
            <item row="7" column="1">
-            <widget class="QLineEdit" name="coverImageFilenameInput">
+            <widget class="QLineEdit" name="cover_image_filename_input">
              <property name="text">
               <string>cover.jpg</string>
              </property>
             </widget>
            </item>
            <item row="8" column="0">
-            <widget class="QLabel" name="environmentLabel">
+            <widget class="QLabel" name="environment_label">
              <property name="text">
               <string>Environment Name</string>
              </property>
@@ -581,12 +641,12 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>environmentNameSelector</cstring>
+              <cstring>environment_name_selector</cstring>
              </property>
             </widget>
            </item>
            <item row="8" column="1">
-            <widget class="QComboBox" name="environmentNameSelector">
+            <widget class="QComboBox" name="environment_name_selector">
              <item>
               <property name="text">
                <string>DefaultEnvironment</string>
@@ -685,7 +745,7 @@
             </widget>
            </item>
            <item row="9" column="0">
-            <widget class="QLabel" name="allDirectionsEnvironmentNameLabel">
+            <widget class="QLabel" name="all_directions_environment_name_label">
              <property name="text">
               <string>All-Directions Environment Name</string>
              </property>
@@ -693,12 +753,12 @@
               <set>Qt::AlignCenter</set>
              </property>
              <property name="buddy">
-              <cstring>allDirectionsEnvironmentNameSelector</cstring>
+              <cstring>all_directions_environment_name_selector</cstring>
              </property>
             </widget>
            </item>
            <item row="9" column="1">
-            <widget class="QComboBox" name="allDirectionsEnvironmentNameSelector">
+            <widget class="QComboBox" name="all_directions_environment_name_selector">
              <item>
               <property name="text">
                <string>GlassDesertEnvironment</string>
@@ -709,32 +769,49 @@
           </layout>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="confirmationLabel">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
+        <item>
+         <layout class="QHBoxLayout" name="info_button_container">
+          <item>
+           <spacer name="horizontal_spacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cancel_button">
+            <property name="text">
+             <string>Cancel</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="apply_button">
+            <property name="text">
+             <string>Apply</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
-        <item row="2" column="0">
-         <spacer name="horizontalSpacer">
+        <item>
+         <spacer name="vertical_spacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
-            <height>20</height>
+            <width>20</width>
+            <height>40</height>
            </size>
           </property>
          </spacer>
-        </item>
-        <item row="2" column="3">
-         <widget class="QPushButton" name="apply">
-          <property name="text">
-           <string>Apply</string>
-          </property>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -747,7 +824,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>928</width>
+     <width>741</width>
      <height>22</height>
     </rect>
    </property>
@@ -757,12 +834,13 @@
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
-    <addaction name="actionRecents"/>
+    <addaction name="actionClose"/>
     <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
     <addaction name="actionCreateRhythm"/>
     <addaction name="actionImportRhythm"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuExport">
     <property name="title">
@@ -879,9 +957,39 @@
     <string>Finalise</string>
    </property>
   </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionClose</sender>
+   <signal>triggered()</signal>
+   <receiver>menubar</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>455</x>
+     <y>10</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

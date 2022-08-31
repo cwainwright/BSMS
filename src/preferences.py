@@ -43,8 +43,6 @@ class Preferences:
         if __value.startswith(Path.home()):
             __value = __value.replace()(Path.home(), "~")
         self.update({"home_directory": __value})
-        with open(self.filepath, "w") as file:
-            json.dump(self.data, file)
     
     # Project Directory Getter
     @property
@@ -54,17 +52,39 @@ class Preferences:
     # Robject Directory Getter
     @property
     def robject_directory(self) -> Path:
-        return self.home_directory/"Robjects"
+        return self.home_directory/"RObjects"
     
     # Export Directory Getter and Setter
     @property
     def export_directory(self) -> Path:
-        return Path(self.get("export_directory"))
+        if str(self.get("export_directory")).startswith("~"):
+            filepath = Path(str(self.get("export_directory")).replace("~", str(Path.home())))
+        else:
+            filepath = Path(self.get("export_directory"))
+        return filepath
     
     @export_directory.setter
     def export_directory(self, __value:str):
+        if __value.startswith(Path.home()):
+            __value = __value.replace()(Path.home(), "~")
         self.update({"export_directory": __value})
-        with open(self.filepath, "w") as file:
-            json.dump(self.data, file)
             
+    @property
+    def timeline_delim(self) -> str:
+        return self.get("timeline_delim", "_")
+    
+    @timeline_delim.setter
+    def timeline_delim(self, __value:str):
+        if __value != "":
+            self.update({"timeline_delim": __value})
+    
+    @property
+    def start_rest_duration(self) -> float:
+        return self.get("start_rest_duration", 4.0)
+    
+    @start_rest_duration.setter
+    def start_rest_duration(self, __value:float):
+        if __value >= 1.0:
+            self.update({"start_rest_duration": __value})
+    
 PREFERENCES = Preferences()

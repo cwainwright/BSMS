@@ -1,10 +1,16 @@
-from preferences import PREFERENCES
 import json
+from enum import Enum
+from typing import Union
 
-"""Management of preset Rhythms"""
+from preferences import PREFERENCES
 
-class RObject():
-    """Parent class for Rhythm and Rest Objects"""
+class RObject_Type(Enum):
+    ANY = 0
+    RHYTHM = 1
+    REST = 2
+
+class __RObject():
+    """Parent class/protocol for Rhythm and Rest Objects"""
     def __init__(
             self,
             robject_id: str,
@@ -28,7 +34,33 @@ class RObject():
     def __iter__(self) -> list:
         return self.note_data
     
-    def to_dict(self) -> dict:
+    def type(self) -> RObject_Type:
+        if self.robject_category == "[]":
+            return RObject_Type.REST
+        else:
+            return RObject_Type.RHYTHM
+        
+    
+    @property
+    def ref(self) -> dict:
+        """Reference dictionary
+
+        Returns:
+            dict: reference robject data (for use in timeline sections)
+        """
+        return {
+            "robject_id": self.robject_id,
+            "robject_category": self.robject_category,
+            "mirror": self.mirror
+        }
+    
+    @property
+    def dict(self) -> dict:
+        """Data dictionary
+
+        Returns:
+            dict: full robject data (for use when restoring RObject)
+        """
         return {
             "robject_id": self.robject_id,
             "robject_category": self.robject_category,
@@ -38,7 +70,7 @@ class RObject():
             }
         }
 
-class Rhythm(RObject):
+class Rhythm(__RObject):
     """Rhythm Object"""
     def __init__(
         self,
@@ -50,7 +82,7 @@ class Rhythm(RObject):
     ):
         super().__init__(robject_id, robject_category, duration, note_data, mirror)
         
-class Rest(RObject):
+class Rest(__RObject):
     """Rest Object"""
     def __init__(
         self,
@@ -60,16 +92,16 @@ class Rest(RObject):
     ):
         super().__init__(robject_id, robject_category, duration, None, False)
         
-def load_robject(robject_id: str, robject_category: str, mirror: bool = False) -> RObject:
-    """Load Rhythm Object from JSON file"""
+def load_robject(robject_id: str, robject_category: str, mirror: bool = False) -> Union[Rhythm, Rest]:
+    """Load robject from JSON file"""
     filepath = PREFERENCES.robject_directory/robject_category/(robject_id+".json")
     if filepath.exists():
         with open(filepath, "r") as file:
             data = json.load(file)
-        if robject_category == "[]":
+        if robject_category in ("[]", "Rest"):
             robject = Rest(
                 robject_id,
-                robject_category,
+                "[]",
                 data.get("duration")   
             )
         else:
@@ -83,7 +115,7 @@ def load_robject(robject_id: str, robject_category: str, mirror: bool = False) -
         return robject
     return None
 
-def restore_robject(robjects, robject_id, robject_category, mirror=False):
+def restore_robject(robjects, robject_id, robject_category, mirror=False) -> Union[Rhythm, Rest]:
         """Restore Robject from Backup"""
         for robject in robjects:
             if all([
@@ -99,3 +131,8 @@ def restore_robject(robjects, robject_id, robject_category, mirror=False):
                     json.dump(robject_data, file)
                 return load_robject(robject_id, robject_category, mirror)
         raise Exception("No backup found for RObject")
+
+if __name__ == "__main__":
+    print(RObject_Type(0))
+    print(RObject_Type(1))
+    print(RObject_Type(2))
