@@ -1,5 +1,3 @@
-from genericpath import isdir
-from multiprocessing.sharedctypes import Value
 from pathlib import Path
 from shutil import rmtree
 
@@ -85,7 +83,29 @@ class QuickstartWindow(QWidget):
             filepath = file_selection_dialog.getExistingDirectory(
                 self, "Select project to open", str(PREFERENCES.project_directory)
             )
-            print(filepath)
+            
+            if Path(filepath).parent != PREFERENCES.project_directory:
+                confirm_dialog = QMessageBox()
+                confirm_dialog.setText("Project Directory")
+                confirm_dialog.setInformativeText(
+                    "Selected project is not located within Projects directory. "
+                    + "\nPlease move Project inside the Projects directory and try again."
+                )
+                confirm_dialog.setDetailedText(
+                    f"Project Path: {filepath}"
+                    +f"\nProject Directory: {PREFERENCES.project_directory}"
+                )
+                confirm_dialog.setStandardButtons(
+                    QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel
+                )
+                confirm_dialog.size
+                confirm_dialog.setFixedSize(confirm_dialog.size())
+                ok = confirm_dialog.exec() != 4194304
+                print(ok)
+                if ok:
+                    return self.open_project()
+                else:
+                    return
 
             if filepath == "":
                 return False
@@ -104,8 +124,7 @@ class QuickstartWindow(QWidget):
 
     def populate_recents(self):
         self.recents_list_widget.clear()
-        projects = PREFERENCES.project_directory.iterdir()
-        for project in projects:
+        for project in PREFERENCES.project_directory.iterdir():
             if project.is_dir():
                 self.recents_list_widget.addItem(project.name)
 
