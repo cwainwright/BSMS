@@ -173,11 +173,6 @@
                 <string>360 Degree</string>
                </property>
               </item>
-              <item>
-               <property name="text">
-                <string>+</string>
-               </property>
-              </item>
              </widget>
             </item>
             <item>
@@ -212,11 +207,6 @@
               <item>
                <property name="text">
                 <string>Expert+</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>+</string>
                </property>
               </item>
              </widget>
@@ -275,6 +265,12 @@
                <iconset resource="resources.qrc">
                 <normaloff>:/general/add</normaloff>:/general/add</iconset>
               </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
              </widget>
             </item>
             <item>
@@ -291,6 +287,12 @@
               <property name="icon">
                <iconset resource="resources.qrc">
                 <normaloff>:/arrows/arrow_down</normaloff>:/arrows/arrow_down</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
               </property>
              </widget>
             </item>
@@ -309,6 +311,12 @@
                <iconset resource="resources.qrc">
                 <normaloff>:/arrows/arrow_up</normaloff>:/arrows/arrow_up</iconset>
               </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
              </widget>
             </item>
             <item>
@@ -325,6 +333,12 @@
               <property name="icon">
                <iconset resource="resources.qrc">
                 <normaloff>:/general/delete</normaloff>:/general/delete</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
               </property>
              </widget>
             </item>
