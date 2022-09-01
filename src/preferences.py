@@ -1,3 +1,4 @@
+from genericpath import isdir
 import json
 from pathlib import Path
 from typing import Any
@@ -32,16 +33,10 @@ class Preferences:
     # Home Directory Getter and Setter
     @property
     def home_directory(self) -> Path:
-        if str(self.get("home_directory")).startswith("~"):
-            filepath = Path(str(self.get("home_directory")).replace("~", str(Path.home())))
-        else:
-            filepath = Path(self.get("home_directory"))
-        return filepath
+        return Path(self.get("home_directory")).expanduser().resolve()
     
     @home_directory.setter
     def home_directory(self, __value:str):
-        if __value.startswith(Path.home()):
-            __value = __value.replace()(Path.home(), "~")
         self.update({"home_directory": __value})
     
     # Project Directory Getter
@@ -57,18 +52,13 @@ class Preferences:
     # Export Directory Getter and Setter
     @property
     def export_directory(self) -> Path:
-        if str(self.get("export_directory")).startswith("~"):
-            filepath = Path(str(self.get("export_directory")).replace("~", str(Path.home())))
-        else:
-            filepath = Path(self.get("export_directory"))
-        return filepath
+        return Path(self.get("export_directory")).expanduser().resolve()
     
     @export_directory.setter
     def export_directory(self, __value:str):
-        if __value.startswith(Path.home()):
-            __value = __value.replace()(Path.home(), "~")
-        self.update({"export_directory": __value})
-            
+        if Path(__value).resolve().isdir():
+            self.update({"export_directory": __value})
+
     @property
     def timeline_delim(self) -> str:
         return self.get("timeline_delim", "_")
