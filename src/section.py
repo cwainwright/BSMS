@@ -1,24 +1,31 @@
-from typing import Union
+from typing import List, Tuple, Union
 
-from robject import Rhythm, Rest
+from robject import RObject, Rhythm, Rest
 
 
 class Section:
     """Section object for organising robjects"""
 
-    def __init__(self, section_name: str):
-        self.section_name = section_name.split(" ")[0].title()
+    def __init__(self, name: str):
+        self.name = name.split(" ")[0].title()
         self.contents: list(Union(Rhythm, Rest)) = []
         self.selected_index = None
 
-    def __iter__(self) -> list:
-        return self.contents
-
     def __str__(self) -> str:
-        return f"{self.section_name}"
+        return f"{self.name}"
 
     def __repr__(self) -> str:
-        return f"Section: {self.section_name}"
+        return f"Section: {self.name}"
+    
+    def __len__(self) -> int:
+        return len(self.contents)
+    
+    @property
+    def duration(self) -> dict:
+        duration = 0
+        for robject in self.contents:
+            duration += robject.duration
+        return duration
 
     @property
     def dict(self) -> dict:
@@ -26,14 +33,23 @@ class Section:
         contents = []
         for robject in self.contents:
             contents.append(robject.ref)
-        return {"name": self.section_name, "contents": contents}
+        return {"name": self.name, "contents": contents}
 
-    def add_robject(self, robject: Union[Rhythm, Rest]) -> bool:
+    def apply_time(self, time: float) -> List[Tuple[float, RObject]]:
+        """Apply start time to robjects and return list"""
+        start_time = time
+        contents = []
+        for robject in self.contents:
+            contents.append((start_time, robject))
+            start_time += robject.duration
+        return contents
+
+    def add_robject(self, robject: RObject) -> "Section":
         """Add RObject to Section"""
         self.contents.append(robject)
-        return True
+        return self
 
-    def new_rest(self, robject_id: str, duration: float) -> bool:
+    def new_rest(self, robject_id: str, duration: float) -> "Section":
         """Add Rest to Section (without accessing Rest Type)"""
         return self.add_robject(Rest(robject_id, "[]", duration))
 
@@ -44,7 +60,7 @@ class Section:
         duration: float,
         note_data: list = None,
         mirror: bool = False,
-    ) -> bool:
+    ) -> "Section":
         """Add Rhythm to Section (without accessing Rhythm Type)"""
         if note_data is None:
             note_data = []
@@ -52,9 +68,8 @@ class Section:
             Rhythm(robject_id, robject_category, duration, note_data, mirror)
         )
 
-    def remove_robject(self, index: int) -> bool:
+    def remove_robject(self, index: int) -> "Section":
         """Remove RObject from Section"""
         if index < len(self.contents):
             self.contents.pop(index)
-            return True
-        return False
+        return self
