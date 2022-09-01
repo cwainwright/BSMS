@@ -18,9 +18,14 @@ class MainWindow(QMainWindow):
         filepath = Path(__file__).parent / "ui" / "main_window.ui"
         uic.loadUi(filepath, self)
         self.setWindowTitle(self.name)
+        self.characteristic_combobox.setCurrentIndex(self.project.current_timeline.characteristic.value)
+        self.difficulty_combobox.setCurrentIndex(self.project.current_timeline.difficulty.value)
         self.setup_connections()
+
         self.robject_manager = RObjectManager(self.robject_tree)
         self.robject_manager.populate_tree()
+        
+        self.project.current_timeline.populate_tree(self.timeline_tree)
 
     def show_quickstart(self):
         self.quickstart.populate_recents()
@@ -28,11 +33,25 @@ class MainWindow(QMainWindow):
 
     def setup_connections(self):
         self.actionNew.triggered.connect(self.show_quickstart)
-        self.robject_filter_combobox.currentIndexChanged.connect(lambda index: self.robject_manager.populate_tree(RObject_Type(index)))
-
+        self.robject_filter_combobox.currentIndexChanged.connect(
+            lambda index: self.robject_manager.populate_tree(RObject_Type(index))
+        )
+        self.characteristic_combobox.currentIndexChanged.connect(
+            lambda: self.set_timeline()
+        )
+        self.difficulty_combobox.currentIndexChanged.connect(
+            lambda: self.set_timeline()
+        )
+        
     @property
     def name(self):
         return self.project.name
+    
+    def set_timeline(self):
+        self.project.set_timeline(
+            self.characteristic_combobox.currentIndex(),
+            self.difficulty_combobox.currentIndex()
+        )
 
 class RObjectManager:
     def __init__(self, tree_widget: QTreeWidget):
@@ -51,7 +70,7 @@ class RObjectManager:
                     continue
                 for robject in category.iterdir():
                     if robject.suffix == ".json":
-                        tree_category.addChild(QTreeWidgetItem([robject.name.replace(".json", "")]))
+                        tree_category.addChild(QTreeWidgetItem([robject.stem]))
                 self.tree_widget.addTopLevelItem(tree_category)
         self.tree_widget.resizeColumnToContents(0)
 
