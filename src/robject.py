@@ -1,6 +1,5 @@
 import json
 from enum import Enum
-from typing import Union
 
 from preferences import PREFERENCES
 
@@ -9,7 +8,7 @@ class RObject_Type(Enum):
     RHYTHM = 1
     REST = 2
 
-class __RObject():
+class RObject():
     """Parent class/protocol for Rhythm and Rest Objects"""
     def __init__(
             self,
@@ -70,7 +69,7 @@ class __RObject():
             }
         }
 
-class Rhythm(__RObject):
+class Rhythm(RObject):
     """Rhythm Object"""
     def __init__(
         self,
@@ -82,7 +81,7 @@ class Rhythm(__RObject):
     ):
         super().__init__(robject_id, robject_category, duration, note_data, mirror)
         
-class Rest(__RObject):
+class Rest(RObject):
     """Rest Object"""
     def __init__(
         self,
@@ -92,7 +91,7 @@ class Rest(__RObject):
     ):
         super().__init__(robject_id, robject_category, duration, None, False)
         
-def load_robject(robject_id: str, robject_category: str, mirror: bool = False) -> Union[Rhythm, Rest]:
+def load_robject(robject_id: str, robject_category: str, mirror: bool = False) -> RObject:
     """Load robject from JSON file"""
     filepath = PREFERENCES.robject_directory/robject_category/(robject_id+".json")
     if filepath.exists():
@@ -115,7 +114,7 @@ def load_robject(robject_id: str, robject_category: str, mirror: bool = False) -
         return robject
     return None
 
-def restore_robject(robjects, robject_id, robject_category, mirror=False) -> Union[Rhythm, Rest]:
+def restore_robject(robjects, robject_id, robject_category, mirror=False) -> RObject:
         """Restore Robject from Backup"""
         for robject in robjects:
             if all([
