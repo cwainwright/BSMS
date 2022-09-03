@@ -26,21 +26,22 @@ class Project:
         self.timelines: list(Timeline) = []
 
         delim = PREFERENCES.timeline_delim
-        for file in self.filepath.iterdir():
-            if file.suffix == ".timeline":
-                characteristic, difficulty = file.stem.split(delim)
-                # Try loading timeline
-                try:
-                    characteristic_index = [member for member in Characteristic.__members__].index(characteristic.upper())
-                    characteristic = Characteristic(characteristic_index)
+        timeline_files = list(filter(lambda file: file.suffix == ".timeline", self.filepath.iterdir()))
+        timeline_files = sorted(timeline_files, key=lambda file: file.stat().st_mtime)
+        for file in timeline_files:
+            characteristic, difficulty = file.stem.split(delim)
+            # Try loading timeline
+            try:
+                characteristic_index = [member for member in Characteristic.__members__].index(characteristic.upper())
+                characteristic = Characteristic(characteristic_index)
 
-                    difficulty_index = [member for member in Difficulty.__members__].index(difficulty.upper())
-                    difficulty = Difficulty(difficulty_index)                
-                    
-                    self.timelines.append(Timeline(self, characteristic, difficulty))
-                # If timeline not recognised throw error
-                except ValueError:
-                    ValueError(f"{file.stem} characteristic or difficulty not recognised!")
+                difficulty_index = [member for member in Difficulty.__members__].index(difficulty.upper())
+                difficulty = Difficulty(difficulty_index)                
+                
+                self.timelines.append(Timeline(self, characteristic, difficulty))
+            # If timeline not recognised throw error
+            except ValueError:
+                ValueError(f"{file.stem} characteristic or difficulty not recognised!")
 
         if len(self.timelines) == 0:
             self.timelines.append(Timeline(self, Characteristic.STANDARD, Difficulty.EASY))
