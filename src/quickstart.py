@@ -2,7 +2,7 @@ from pathlib import Path
 from shutil import rmtree
 
 from PyQt6 import uic
-from PyQt6.QtCore import QSize, QThreadPool
+from PyQt6.QtCore import QSize, QThreadPool, Qt
 from PyQt6.QtWidgets import (
     QFileDialog,
     QInputDialog,
@@ -33,7 +33,7 @@ class QuickstartWindow(QWidget):
         input_dialog = QInputDialog(self)
         project_name, ok = input_dialog.getText(self, "New Project", "Project Name:")
         if not ok:
-            return False
+            return
         input_dialog.destroy()
 
         if (PREFERENCES.project_directory / project_name).exists():
@@ -46,7 +46,7 @@ class QuickstartWindow(QWidget):
                 QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel
             )
             confirm_dialog.setFixedSize(QSize(300, 100))
-            ok = confirm_dialog.exec() != 4194304
+            ok = confirm_dialog.exec() == 1024
             if ok:
                 rmtree(PREFERENCES.project_directory / project_name)
             else:
@@ -57,7 +57,7 @@ class QuickstartWindow(QWidget):
             self, caption="Select Audiofile", filter="*.wav; *.ogg"
         )
         if not ok:
-            return False
+            return
         file_selection_dialog.destroy()
 
         progress_bar = QProgressDialog(self)
@@ -75,7 +75,7 @@ class QuickstartWindow(QWidget):
 
         self.threadpool.start(analysis_worker)
 
-        return True
+        return
 
     def open_project(self, project: Project = None):
         if project is None:
@@ -83,7 +83,12 @@ class QuickstartWindow(QWidget):
             filepath = file_selection_dialog.getExistingDirectory(
                 self, "Select project to open", str(PREFERENCES.project_directory)
             )
-            
+            file_selection_dialog.destroy()
+
+            if filepath == "":
+                return
+
+            # Validate selected Project is inside Project Directory
             if Path(filepath).parent != PREFERENCES.project_directory:
                 confirm_dialog = QMessageBox()
                 confirm_dialog.setText("Project Directory")
@@ -93,30 +98,29 @@ class QuickstartWindow(QWidget):
                 )
                 confirm_dialog.setDetailedText(
                     f"Project Path: {filepath}"
-                    +f"\nProject Directory: {PREFERENCES.project_directory}"
+                    + f"\nProject Directory: {PREFERENCES.project_directory}"
                 )
                 confirm_dialog.setStandardButtons(
                     QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel
                 )
                 confirm_dialog.size
                 confirm_dialog.setFixedSize(confirm_dialog.size())
-                ok = confirm_dialog.exec() != 4194304
-                print(ok)
+                ok = confirm_dialog.exec() == 1024
+                confirm_dialog.destroy()
+
                 if ok:
                     return self.open_project()
                 else:
                     return
 
-            if filepath == "":
-                return False
             project = Project(Path(filepath).name)
 
         if project.name in [window.project.name for window in self.main_windows]:
             index = [window.project.name for window in self.main_windows].index(
                 project.name
             )
-            del project
             self.main_windows[index].show()
+            self.main_windows[index].activateWindow()
         else:
             self.main_windows.append(MainWindow(self, project))
             self.main_windows[-1].show()
