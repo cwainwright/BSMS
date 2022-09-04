@@ -33,6 +33,7 @@ class RObject():
     def __iter__(self) -> list:
         return self.note_data
     
+    @property
     def type(self) -> RObject_Type:
         if self.robject_category == "[]":
             return RObject_Type.REST
@@ -130,8 +131,3 @@ def restore_robject(robjects, robject_id, robject_category, mirror=False) -> ROb
                     json.dump(robject_data, file)
                 return load_robject(robject_id, robject_category, mirror)
         raise Exception("No backup found for RObject")
-
-if __name__ == "__main__":
-    print(RObject_Type(0))
-    print(RObject_Type(1))
-    print(RObject_Type(2))
