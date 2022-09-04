@@ -25,6 +25,14 @@
         ],
         "robject_backup": []
     },
+    "robject_backup_entry": {
+        "robject_id":"robject_id",
+        "robject_category":"Rest",
+        "robject_data":{
+            "duration":0,
+            "note_data":[]
+        }
+    },
     "robject": {
         "note_data": [],
         "duration": 0.0
