@@ -121,27 +121,24 @@ class Timeline:
             return True
         return False
 
-    def get_data(self, time: float) -> List[Tuple[float, str, List]]:
-        start_time = time
-        contents = []
-        for section in self.sections:
-            contents.append((start_time, section.name, section.apply_time(start_time)))
-            start_time += section.duration
-        return contents
-
     def populate_tree(self, tree_widget: QTreeWidget):
-        data = self.get_data(0)
-        for section in data:
-            tree_section = QTreeWidgetItem([str(section[0]), section[1]])
-            for robject in section[2]:
+        tree_widget.clear()
+        start_time = 0
+        for section in self.sections:
+            tree_section = QTreeWidgetItem([str(start_time), section.name, "", "Section", str(section.duration)])
+            for robject in section.contents:
                 tree_robject = QTreeWidgetItem(
                     [
-                        str(robject[0]),
-                        robject[1].robject_id,
-                        robject[1].robject_category,
-                        robject[1].type.name.lower(),
-                        str(robject[1].duration),
+                        str(start_time),
+                        robject.robject_id,
+                        robject.robject_category,
+                        robject.type.name.title(),
+                        str(robject.duration),
                     ]
                 )
                 tree_section.addChild(tree_robject)
+                start_time += robject.duration
             tree_widget.addTopLevelItem(tree_section)
+        tree_widget.expandAll()
+        for i in range(0, tree_widget.columnCount()-1):
+            tree_widget.resizeColumnToContents(i)
