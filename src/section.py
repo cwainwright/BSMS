@@ -1,6 +1,7 @@
-from typing import List, Tuple, Union
+from typing import List, Tuple
+from files import get_template
 
-from robject import RObject, Rhythm, Rest
+from robject import RObject, Rhythm, Rest, restore_robject
 
 
 class Section:
@@ -8,7 +9,7 @@ class Section:
 
     def __init__(self, name: str):
         self.name = name.split(" ")[0].title()
-        self.contents: list(Union(Rhythm, Rest)) = []
+        self.contents: list(RObject) = []
         self.selected_index = None
 
     def __str__(self) -> str:
@@ -22,10 +23,7 @@ class Section:
     
     @property
     def duration(self) -> dict:
-        duration = 0
-        for robject in self.contents:
-            duration += robject.duration
-        return duration
+        return sum([robject.duration for robject in self.contents])
 
     @property
     def dict(self) -> dict:
@@ -51,6 +49,11 @@ class Section:
 
     def new_rest(self, robject_id: str, duration: float) -> "Section":
         """Add Rest to Section (without accessing Rest Type)"""
+        restore_robject([{
+            "robject_id": robject_id,
+            "robject_category": "[]",
+            "robject_data": {"duration": duration, "note_data": []}
+        }], robject_id, "[]")
         return self.add_robject(Rest(robject_id, "[]", duration))
 
     def new_rhythm(
