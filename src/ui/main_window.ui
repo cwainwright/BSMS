@@ -38,7 +38,7 @@
        <attribute name="title">
         <string>Timeline</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
@@ -249,7 +249,7 @@
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QPushButton" name="add_button">
               <property name="sizePolicy">
@@ -259,7 +259,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Add</string>
+               <string>Add Rhythm</string>
               </property>
               <property name="icon">
                <iconset resource="resources.qrc">
@@ -274,7 +274,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="down_button">
+             <widget class="QPushButton" name="add_section_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -282,40 +282,11 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Down</string>
+               <string>Add Section</string>
               </property>
               <property name="icon">
                <iconset resource="resources.qrc">
-                <normaloff>:/arrows/arrow_down</normaloff>:/arrows/arrow_down</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>16</width>
-                <height>16</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="up_button">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Up</string>
-              </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/arrows/arrow_up</normaloff>:/arrows/arrow_up</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>16</width>
-                <height>16</height>
-               </size>
+                <normaloff>:/general/add</normaloff>:/general/add</iconset>
               </property>
              </widget>
             </item>
