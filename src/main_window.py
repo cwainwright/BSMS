@@ -1,13 +1,16 @@
+from operator import index
 import sys
 from pathlib import Path
 
 from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication, QMainWindow, QTreeWidget, QTreeWidgetItem
+from PyQt6.QtWidgets import QApplication, QMainWindow, QInputDialog
 
 from project import Project
-from robject import RObject_Type, load_robject
+from robject import RObject_Type
+from robject_manager import RObjectManager
 
 from preferences import PREFERENCES
+from section import Section
 
 
 class MainWindow(QMainWindow):
@@ -15,6 +18,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.quickstart = quickstart
         self.project = project
+        self.robject_manager = RObjectManager()
         filepath = Path(__file__).parent / "ui" / "main_window.ui"
         uic.loadUi(filepath, self)
         self.setWindowTitle(self.name)
@@ -26,9 +30,12 @@ class MainWindow(QMainWindow):
             self.project.current_timeline.difficulty.value
         )
 
-        self.robject_manager = RObjectManager()
-        self.robject_manager.populate_tree(self.robject_tree)
-        self.project.current_timeline.populate_tree(self.timeline_tree)
+        # Set and populate trees
+        self.robject_manager.set_tree_widget(self.robject_tree)
+        self.robject_manager.populate_tree()
+
+        self.project.set_tree_widget(self.timeline_tree)
+        self.project.current_timeline.populate_tree()
 
         self.setup_connections()
 
@@ -45,9 +52,7 @@ class MainWindow(QMainWindow):
 
         # RObjects
         self.robject_filter_combobox.currentIndexChanged.connect(
-            lambda index: self.robject_manager.populate_tree(
-                self.robject_tree, RObject_Type(index)
-            )
+            lambda index: self.robject_manager.populate_tree(RObject_Type(index))
         )
 
         # Timeline
@@ -57,6 +62,13 @@ class MainWindow(QMainWindow):
         self.difficulty_combobox.currentIndexChanged.connect(
             lambda: self.set_timeline()
         )
+        self.add_rhythm_button.clicked.connect(
+            lambda: self.project.current_timeline.add_robject(
+                self.robject_manager.selected_robject
+            )
+        )
+        self.add_section_button.clicked.connect(self.add_section)
+        self.timeline_tree.currentItemChanged.connect(self.project.current_timeline.print_coordinates)
 
     @property
     def name(self):
@@ -66,44 +78,23 @@ class MainWindow(QMainWindow):
         self.project.set_timeline(
             self.characteristic_combobox.currentIndex(),
             self.difficulty_combobox.currentIndex(),
+        ).set_tree_widget(self.timeline_tree)
+        
+    def add_section(self):
+        input_dialog = QInputDialog()
+        input_dialog.setOkButtonText("Add")
+        name, ok = input_dialog.getText(
+            self, "New Section", "Section Name:"
         )
-        self.project.current_timeline.populate_tree(self.timeline_tree)
-
-
-class RObjectManager:
-    def populate_tree(
-        self, tree_widget: QTreeWidget, show: RObject_Type = RObject_Type.ANY
-    ):
-        tree_widget.clear()
-        for category in PREFERENCES.robject_directory.iterdir():
-            if category.is_dir():
-                category_robjects = list(category.iterdir())
-                duration = load_robject(
-                    category_robjects[0].stem, category.name
-                ).duration
-                if category.name != "[]" and show in [
-                    RObject_Type.ANY,
-                    RObject_Type.RHYTHM,
-                ]:
-                    tree_category = QTreeWidgetItem([category.name, str(duration)])
-                elif category.name == "[]" and show in [
-                    RObject_Type.ANY,
-                    RObject_Type.REST,
-                ]:
-                    tree_category = QTreeWidgetItem(["Rests", str(duration)])
-                else:
-                    continue
-                for robject in category_robjects:
-                    if robject.suffix == ".json":
-                        tree_category.addChild(
-                            QTreeWidgetItem([robject.stem, str(duration)])
-                        )
-                tree_widget.addTopLevelItem(tree_category)
-        tree_widget.resizeColumnToContents(0)
-
+        if not ok:
+            return
+        input_dialog.destroy()
+        
+        self.project.current_timeline.add_section(Section(name))
+            
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    main_window = MainWindow(Project("test"))
+    main_window = MainWindow(None, Project("Apocalypse Please"))
     main_window.show()
     sys.exit(app.exec())
