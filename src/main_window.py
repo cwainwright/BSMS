@@ -31,6 +31,7 @@ class MainWindow(QMainWindow):
 
         # Set and populate trees
         self.robject_manager.set_tree_widget(self.robject_tree)
+        self.robject_manager.set_mirror_checkbox(self.mirror_checkbox)
         self.robject_manager.populate_tree()
 
         self.project.set_tree_widget(self.timeline_tree)
@@ -61,13 +62,16 @@ class MainWindow(QMainWindow):
         self.difficulty_combobox.currentIndexChanged.connect(
             lambda: self.set_timeline()
         )
-        self.add_rhythm_button.clicked.connect(
+        self.add_robject_button.clicked.connect(
             lambda: self.project.current_timeline.add_robject(
                 self.robject_manager.selected_robject
             )
         )
-        self.add_section_button.clicked.connect(self.add_section)
-        self.timeline_tree.currentItemChanged.connect(self.project.current_timeline.print_coordinates)
+        self.add_section_button.clicked.connect(self.new_section)
+        self.remove_object_button.clicked.connect(self.remove_object)
+        self.timeline_tree.currentItemChanged.connect(self.project.current_timeline.item_selected)
+        self.timeline_tree.itemExpanded.connect(self.project.current_timeline.section_expanded)
+        self.timeline_tree.itemCollapsed.connect(self.project.current_timeline.section_collapsed)
 
     @property
     def name(self):
@@ -79,18 +83,28 @@ class MainWindow(QMainWindow):
             self.difficulty_combobox.currentIndex(),
         ).set_tree_widget(self.timeline_tree)
         
-    def add_section(self):
+    def new_section(self):
         input_dialog = QInputDialog()
         input_dialog.setOkButtonText("Add")
         name, ok = input_dialog.getText(
             self, "New Section", "Section Name:"
         )
         if not ok:
-            return
+            return -1
         input_dialog.destroy()
         
         self.project.current_timeline.add_section(Section(name))
-            
+        return 0
+    
+    def remove_object(self):
+        __index = self.project.current_timeline.current_index
+        if __index[0] == -1:
+            return -1
+        elif __index[1] == -1:
+            self.project.current_timeline.remove_section()
+        else:
+            self.project.current_timeline.remove_robject()
+        return 0
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
